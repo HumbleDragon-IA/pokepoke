@@ -139,6 +139,8 @@ beforeUpdate(){
     },
     submit() {
       this.$emit('enviar', { ...this.selectedPokemon });
+      this.query='',
+      this.selectedPokemon=null
     },
     ocultar() {
       this.$emit('ocultar');
