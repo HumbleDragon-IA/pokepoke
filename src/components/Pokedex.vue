@@ -15,8 +15,8 @@
           <h2>{{ selectedPokemon.name }}</h2>
           <p>#{{ selectedPokemon.id }}</p>
         </div>
-        <img class="pokemon-image" :src="selectedPokemon.sprites.front_default" :alt="selectedPokemon.name"
-          :style="{ backgroundColor: selectedPokemonColor }" />
+        <img class="pokemon-image" :src="pokemonImgSrc" :alt="selectedPokemon.name"
+           />
         <div class="card-body">
           <p><strong>Type:</strong> {{ selectedPokemon.types[0].type.name }}</p>
           <div class="stats">
@@ -42,6 +42,7 @@ export default {
       query: '',
       suggestions: [],
       selectedPokemon: null,
+      pokemonImgSrc: null,
       selectedPokemonColor: '',
     };
   },
@@ -79,6 +80,7 @@ export default {
         this.selectedPokemonColor = species.color.name;
         this.suggestions = [];
         this.query = name;
+        this.pokemonImgSrc = this.selectedPokemon.sprites.other["official-artwork"].front_default
       } catch (error) {
         console.error('Error fetching Pokémon details:', error);
       }
@@ -98,7 +100,7 @@ export default {
 .title{
   margin-top: 1rem;
   width: 100%;
-  font-weight: bolder;
+  
 }
 
 input {
@@ -181,9 +183,7 @@ input {
   margin: 0 auto;
   width: 250px;
   height: 250px;
-  background: black;
-  border: solid 10px black;
-  border-radius: 50%;
+
   padding: 0;
   box-sizing: border-box;
 }

@@ -1,6 +1,6 @@
 <template>
 
-  <section class="src-componentes-navbar">
+  <section class="src-components-navbar">
 
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -30,7 +30,7 @@
 
 
         </ul>
-        <img src="../assets/Magikarp.webp" alt="">
+        <img class="banner-img" src="../assets/Magikarp.webp" alt="">
       </div>
     </nav>
   </section>
@@ -62,7 +62,13 @@ export default {
 </script>
 
 <style scoped lang="css">
+
+.src-components-navbar {
+  margin-top: 5vh;
+}
+
 nav {
   height: 70px;
 }
+
 </style>

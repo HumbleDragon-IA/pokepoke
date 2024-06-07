@@ -5,7 +5,6 @@
     
     <div >
       <div class="">
-      <h1>Ortemon</h1>
       
       <br>
 
@@ -32,7 +31,7 @@ export default {
 <style>
 
 body {
-  background-image: url("./assets/pokebola.jpg");
+  background-image: url("./assets/pokeball-pc-hd.webp");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
