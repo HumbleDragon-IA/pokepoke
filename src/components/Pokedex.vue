@@ -9,28 +9,29 @@
         {{ suggestion.name }}
       </li>
     </ul>
-    <div class="card-container">
-      <div v-if="selectedPokemon" class="pokemon-card">
-        <div class="card-header" :style="{ backgroundColor: selectedPokemonColor }">
-          <h2>{{ selectedPokemon.name }}</h2>
-          <p>#{{ selectedPokemon.id }}</p>
-        </div>
-        <img class="pokemon-image" :src="pokemonImgSrc" :alt="selectedPokemon.name"
-           />
-        <div class="card-body">
-          <p><strong>Type:</strong> {{ selectedPokemon.types[0].type.name }}</p>
-          <div class="stats">
-            <h3>Stats</h3>
-            <ul>
-              <li v-for="stat in selectedPokemon.stats" :key="stat.stat.name">
-                <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
-              </li>
-            </ul>
-          </div>
+    <div v-if="selectedPokemon" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
+      <div class="card-header">
+        <h2>{{ selectedPokemon.name }}</h2>
+        <p>#{{ selectedPokemon.id }}</p>
+      </div>
+      <div class="circle"></div>
+      <img class="pokemon-image" :src="pokemonImgSrc" :alt="selectedPokemon.name" />
+
+      <div class="card-body">
+        <div class="stats">
+          <h3>Stats</h3>
+          <hr>
+          <ul>
+            <li><strong>Type:</strong> {{ selectedPokemonTypesIcons }}</li>
+            <li v-for="stat in selectedPokemon.stats" :key="stat.stat.name">
+              <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
+            </li>
+          </ul>
         </div>
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -43,7 +44,6 @@ export default {
       suggestions: [],
       selectedPokemon: null,
       pokemonImgSrc: null,
-      selectedPokemonColor: '',
     };
   },
   methods: {
@@ -77,7 +77,6 @@ export default {
         this.selectedPokemon = await pokemonService.getPokemonDetails(name);
         const species = await pokemonService.getPokemonSpecies(name);
         console.log(this.selectedPokemon);
-        this.selectedPokemonColor = species.color.name;
         this.suggestions = [];
         this.query = name;
         this.pokemonImgSrc = this.selectedPokemon.sprites.other["official-artwork"].front_default
@@ -86,6 +85,67 @@ export default {
       }
     },
   },
+  computed: {
+    selectedPokemonTypesIcons() {
+      const typeDictionary = {
+        bug: "🐞",
+        dark: "🌙",
+        dragon: "🐲",
+        electric: "⚡",
+        fairy: "✨",
+        fighting: "🥊",
+        fire: "🔥",
+        flying: "🌪️",
+        ghost: "👻",
+        grass: "🌿",
+        ground: "🗿",
+        ice: "❄️",
+        normal: "⚪",
+        poison: "☠️",
+        psychic: "🧠",
+        rock: "⛰️",
+        steel: "🛡️",
+        water: "💧"
+      };
+      let types = [];
+      if (this.selectedPokemon) {
+        this.selectedPokemon.types.forEach(element => {
+          types.push(typeDictionary[element.type.name]);
+        });
+      }
+      return types.join(" ");
+    },
+    selectedPokemonTypeColor() {
+      const colors = {
+        grass: "#d2f2c2",
+        poison: "#f7cdf7",
+        fire: "#ffd1b5",
+        flying: "#eae3ff",
+        water: "#c2f3ff",
+        bug: "#e0e8a2",
+        normal: "#e6e6c3",
+        electric: "#fff1ba",
+        ground: "#e0ccb1",
+        fighting: "#fcada9",
+        psychic: "#ffc9da",
+        rock: "#f0e09c",
+        fairy: "#ffdee5",
+        steel: "#e6eaf0",
+        ice: "#e8feff",
+        ghost: "#dbbaff",
+        dragon: "#c4bdff",
+        dark: "#a9abb0"
+      };
+      if (this.selectedPokemon) {
+        let type = this.selectedPokemon.types[0].type.name;
+        return colors[type];
+      }
+      return '#f7f7f7';
+    }
+  }
+
+
+
 };
 </script>
 
@@ -97,10 +157,10 @@ export default {
   position: relative;
 }
 
-.title{
+.title {
   margin-top: 1rem;
   width: 100%;
-  
+
 }
 
 input {
@@ -144,38 +204,34 @@ input {
   background-color: #f7f7f7;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
-  font-family: 'Arial', sans-serif;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   position: relative;
   overflow: hidden;
-  border: solid black 5px;
-  background-color: rgb(235, 235, 235);
-  width: 500px;
+  border: solid white 10px;
+
 }
 
 .card-header {
+  height: 50px;
   color: black;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  border-style: inset;
   font-size: 50px;
-  font-weight: bolder;
-  border-width: 4px;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .card-header h2 {
   text-transform: capitalize;
   margin: 0;
   font-size: 24px;
-  font-weight: bolder;
-  font-style: oblique;
-  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 600;
 }
 
 .card-header p {
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: bolder;
 }
 
 .pokemon-image {
@@ -183,24 +239,17 @@ input {
   margin: 0 auto;
   width: 250px;
   height: 250px;
-
   padding: 0;
   box-sizing: border-box;
 }
 
-.card-body {
-  padding: 10px;
-}
-
-.card-body p {
-  margin: 10px 0;
-  text-transform: capitalize;
-}
-
 .stats {
-  margin-top: 20px;
+  margin-top: -10px;
+  margin-bottom: -30px;
   border: solid black 3px;
   padding: 25px;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .stats h3 {
@@ -216,7 +265,7 @@ input {
 }
 
 .stats ul li {
-  padding: 5px 0;
+  padding: 2px 0;
   display: flex;
   justify-content: space-between;
 }
