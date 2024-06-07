@@ -37,9 +37,10 @@
                   </div>
                 </div>
               </div>
-              <button :disabled="!pokemonValido" :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']">
+              <button :disabled="!pokemonValido" :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']" >
                 {{ editarId ? 'Actualizar' : 'Agregar' }}
                 
+
               </button>
               <button type="button" @click="ocultar" class="btn btn-secondary mt-5 mb-3 float-left">
                 Cancelar
@@ -56,16 +57,24 @@
 import { Modal } from 'bootstrap';
 import pokemonService from '@/services/pokemonService';
 
+
 export default {
   name: 'ModalPokemon',
   props: ['mostrar', 'editarId', 'pokemonId'],
 
   beforeCreate(){
-  this.selectedPokemon=null
+    console.log('beforeuCreate')
 
+  },
+  created(){
+    console.log('created')
+  },
+  beforMount(){
+    console.log('beforemount')
   },
   mounted() {
     
+    console.log('mounted')
     this.modal = new Modal(document.getElementById('exampleModal'), {
       keyboard: false,
       backdrop: 'static',
@@ -73,16 +82,14 @@ export default {
   },
 
 beforeUpdate(){
+  
   console.log('beforeuptdate')
+ 
 },
   updated(){
-    
-    console.log('updated')
+   
   },
-  afterUpdate(){
-  this.selectedPokemon=null
-
-  },
+ 
   beforeUnmount(){
     console.log('beforeUnmount')
   },
@@ -138,7 +145,10 @@ beforeUpdate(){
       this.modal.hide();
     },
     submit() {
+      
       this.$emit('enviar', { ...this.selectedPokemon });
+      this.query='';
+      this.selectedPokemon=null;
     },
     ocultar() {
       this.$emit('ocultar');
