@@ -1,5 +1,5 @@
 
-<template class="">
+<template>
   <div id="fondo" class="background">
   <div id="principal" class="container mt-3">
     
@@ -10,13 +10,7 @@
       <br>
 
       <Navbar/>
-
-      <RouterView />
-    
-
-      
-       
-      
+      <RouterView />    
     </div>
   </div>
 </div>
@@ -35,26 +29,17 @@ export default {
 </script>
 
 
-<style scoped>
-#app{
-  background-color: black;
-  /* background-image:  url('@/assets/pokebola.jpg'); */
-}
-#logo{
-  width: 1000px;
+<style>
+
+body {
+  background-image: url("./assets/pokebola.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  height: 100vh
 }
 
-#principal{
 
-}
-.background {
-  height: 100vh; /* Hace que el contenedor ocupe toda la altura de la ventana */
-  margin: 0;
-  padding: 0;
-  background-image: url('@/assets/pokebola.jpg'); /* URL de tu imagen de fondo */
-  background-size: cover; /* Ajusta el tamaño de la imagen para cubrir toda la página */
-  background-repeat: no-repeat; /* Evita que la imagen se repita */
-  background-attachment: fixed; /* Hace que la imagen de fondo se mantenga fija al hacer scroll */
-  background-position: center; /* Centra la imagen de fondo */
-}
+
 </style>
