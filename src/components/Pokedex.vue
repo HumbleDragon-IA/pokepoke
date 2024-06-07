@@ -208,8 +208,29 @@ input {
   position: relative;
   overflow: hidden;
   border: solid white 10px;
-
 }
+
+.pokemon-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url('../assets/card-texture.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1.5;
+  z-index: 1;
+  mix-blend-mode: multiply; 
+}
+
+.pokemon-card > * {
+  position: relative;
+  z-index: 2;
+}
+
 
 .card-header {
   height: 50px;
