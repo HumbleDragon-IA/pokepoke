@@ -1,0 +1,128 @@
+.src-components-tablero {
+
+}
+.src-components-principal {
+    height: 100vh;
+    /* Hace que el contenedor ocupe toda la altura de la ventana */
+    margin: 0;
+    padding: 0;
+    background-image: url('@/assets/pokebola.jpg');
+    /* URL de tu imagen de fondo */
+    background-size: cover;
+    /* Ajusta el tamaño de la imagen para cubrir toda la página */
+    background-repeat: no-repeat;
+    /* Evita que la imagen se repita */
+    background-attachment: fixed;
+    /* Hace que la imagen de fondo se mantenga fija al hacer scroll */
+    background-position: center;
+    /* Centra la imagen de fondo */
+  }
+  
+  .card-img-top {
+    width: 150px;
+  }
+  
+  .card-body {
+    color: black;
+  
+  }
+  
+  
+  
+  .imgPoke {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border: 15px;
+  
+  }
+  
+  .fondoTarj {
+    padding: 15px;
+  }
+  
+  .pokedex {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+  
+  input {
+    width: 100%;
+    padding: 8px;
+    margin: 20px 0;
+  }
+  
+  .suggestion-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background: white;
+    border: 1px solid #ccc;
+    position: absolute;
+    width: 100%;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 10;
+  }
+  
+  .suggestion-list li {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .suggestion-list li:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .pokemon-card {
+    margin-top: 20px;
+    border: 5px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    background-color: #f9f9f9;
+    color: black;
+    /* Color del texto para buena visibilidad */
+  }
+  
+  .pokemon-card h2 {
+    text-transform: capitalize;
+    text-align: center;
+    margin: 0;
+    padding-bottom: 10px;
+  }
+  
+  .pokemon-card img {
+    max-width: 150px;
+    /* Ajustar el tamaño para que encaje bien en la tarjeta */
+    display: block;
+    margin: 0 auto 20px;
+  }
+  
+  .pokemon-card .stats {
+    margin-top: 20px;
+  }
+  
+  .pokemon-card .stats ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .pokemon-card .stats ul li {
+    padding: 5px 0;
+  }
+ 
+  .background {
+    height: 100vh; /* Hace que el contenedor ocupe toda la altura de la ventana */
+    margin: 0;
+    padding: 0;
+    background-image: url('@/assets/tarjVacia.png'); /* URL de tu imagen de fondo */
+    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir toda la página */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed; /* Hace que la imagen de fondo se mantenga fija al hacer scroll */
+    background-position: center; /* Centra la imagen de fondo */
+  }
+ 

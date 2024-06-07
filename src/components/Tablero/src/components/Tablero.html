@@ -1,0 +1,58 @@
+<template>
+  <section>
+    <ModalPokemon
+      :mostrar="mostrar"
+      :pokemonId="pokemonId"
+      :editarId="editarId"
+      @ocultar="ocultar"
+      @enviar="enviar"
+    />
+    <ModalBorrarPokemon
+      :mostrar="mostrar2"
+      :borrarID="borrarId"
+      @ocultar="ocultar2"
+      @borrar="borrar"
+    />
+
+    <div class="jumbotron">
+      <h5>Tablero Jugador</h5>
+      <button class="btn btn-success my-3 mr-2" @click="agregar">
+        Agregar Pokemon
+      </button>
+
+      <div class="row">
+        <div class="col-4 " v-for="(pokemon, index) in pokemones" :key="index">
+          <div class="card mb-3" >
+            <div class="row no-gutters">
+              <div class="col-md-4 imgPoke" style="width: 800px">
+                <div>
+                  
+                  <img v-if="!!pokemon" :src="pokemon.image" :alt="pokemon.nombre" />
+                  <img v-else src="../../../../assets/tarjVacia.png">
+                </div>
+              </div>
+              <div class="col-md-8" style="width: 800px">
+                <div class="card-body">
+                  <tr>
+                    <h5 class="card-title">
+                      {{ pokemon.nombre }} Nivel: {{ pokemon.nivel }}
+                    </h5>
+                  </tr>
+                  <tr></tr>
+                </div>
+                <p class="btn btn-success my-2"
+                @click="verStats()">Ver Stats</p>
+                <p
+                  class="btn btn-danger my-2"
+                  @click="deletePokemon(pokemon.id)"
+                >
+                  <small class="text-muted">Borrar Pokemon</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
