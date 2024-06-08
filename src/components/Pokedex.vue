@@ -47,6 +47,7 @@ export default {
       sugerencias: [],
       pokemonSeleccionado: null,
       pokemonImgSrc: null,
+      species: null
     };
   },
   methods: {
