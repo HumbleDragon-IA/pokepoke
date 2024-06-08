@@ -1,9 +1,9 @@
 <template>
 
-  <section class="src-componentes-navbar">
+  <section class="src-components-navbar">
 
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
 
       <a class="navbar-brand" href="#">
         <img src="../assets/pokeball-logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -30,7 +30,7 @@
 
 
         </ul>
-        <img src="../assets/Magikarp.webp" alt="">
+        <img class="banner-img d-none d-lg-block" src="../assets/Magikarp.webp" alt="">
       </div>
     </nav>
   </section>
@@ -62,7 +62,13 @@ export default {
 </script>
 
 <style scoped lang="css">
+
+.src-components-navbar {
+  margin-top: 5vh;
+}
+
 nav {
   height: 70px;
 }
+
 </style>
