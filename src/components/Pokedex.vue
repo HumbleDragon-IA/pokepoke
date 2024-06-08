@@ -7,7 +7,8 @@
 
     <ul v-if="sugerencias.length" class="suggestion-list">
       <li v-for="suggestion in sugerencias" :key="suggestion.name" @click="selectPokemon(suggestion.name)">
-        {{ suggestion.name }}
+        <span><img alt="" srcset="" :src="suggestion.sprite"></span>
+        <span>{{ suggestion.name }}</span>
       </li>
     </ul>
     <div v-if="pokemonSeleccionado" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
@@ -55,7 +56,12 @@ export default {
         if (!isNaN(this.query)) {
           try {
             const pokemon = await pokemonService.getPokemonDetails(this.query);
-            this.sugerencias = [{ name: pokemon.name }];
+            this.sugerencias = [
+              {
+                name: pokemon.name,
+                sprite: pokemon.sprites.front_default,
+              }
+            ];
           } catch (error) {
             console.error('Error al traer Pokémon by ID:', error);
             this.sugerencias = [];
@@ -64,7 +70,7 @@ export default {
           try {
             const allPokemon = await pokemonService.getAllPokemon();
             this.sugerencias = allPokemon.filter(pokemon =>
-              pokemon.name.includes(this.query.toLowerCase())
+            pokemon.name.includes(this.query.toLowerCase())
             );
           } catch (error) {
             console.error('Error al traer la lista de pokemones:', error);
@@ -83,7 +89,7 @@ export default {
         this.query = name;
         this.pokemonImgSrc = this.pokemonSeleccionado.sprites.other["official-artwork"].front_default
       } catch (error) {
-        console.error('Error fetching Pokémon details:', error);
+        console.error('Error al traer detalles del pokemon:', error);
       }
     },
   },
@@ -98,7 +104,6 @@ export default {
       return types.join(" ");
     },
     selectedPokemonTypeColor() {
-
 
       if (this.pokemonSeleccionado) {
         let type = this.pokemonSeleccionado.types[0].type.name;
@@ -130,6 +135,7 @@ input {
   margin: 8px 0;
   box-sizing: border-box;
   border: none;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
 .suggestion-list {
@@ -138,16 +144,22 @@ input {
   margin: 0;
   background: white;
   border: 1px solid #ccc;
-  position: absolute;
+  position: relative;
   width: 100%;
   max-height: 150px;
   overflow-y: auto;
   z-index: 10;
+  font-size: 20px;
+  
 }
 
 .suggestion-list li {
-  padding: 8px;
   cursor: pointer;
+  display: flex;
+  text-transform: capitalize;
+  justify-content:first baseline;
+  align-items: center;
+
 }
 
 .suggestion-list li:hover {
@@ -166,7 +178,7 @@ input {
   padding: 20px;
   background-color: #f7f7f7;
   text-align: left;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
   position: relative;
   overflow: hidden;
   border: solid white 10px;
