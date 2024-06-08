@@ -12,7 +12,7 @@
           <div class="modal-body">
             <form class="m-3" @submit.prevent="submit">
               <div class="form-group">
-                <Pokedex ref="pokedex" @pokemon-selected="updateSelectedPokemon"></Pokedex>
+                <Pokedex ref="pokedex" @pokemon-selected="updatePokemonSeleccionado"></Pokedex>
               </div>
               <button :disabled="!pokemonValido"
                 :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']">
@@ -40,7 +40,7 @@ export default {
   components: { Pokedex },
     mounted() {
 
-    console.log(this.pokeElegido)
+    console.log(this.pokemonSeleccionado)
     this.modal = new Modal(document.getElementById('exampleModal'), {
       keyboard: false,
       backdrop: 'static',
@@ -54,14 +54,14 @@ export default {
       modal: null,
       query: '',
       suggestions: [],
-      selectedPokemon: null,
+      pokemonSeleccionado: null,
       muestra: true,
     };
   },
   methods: {
 
-    updateSelectedPokemon(pokemon) {
-      this.selectedPokemon = pokemon;
+    updatePokemonSeleccionado(pokemon) {
+      this.pokemonSeleccionado = pokemon;
     },
     show() {
       this.modal.show();
@@ -71,12 +71,12 @@ export default {
       this.modal.hide();
     },
     submit() {
-      if (this.selectedPokemon) {
-        this.$emit('enviar', this.selectedPokemon);
+      if (this.pokemonSeleccionado) {
+        this.$emit('enviar', this.pokemonSeleccionado);
       } else {
         console.error('No Pokémon selected');
       }
-      this.selectedPokemon = null;
+      this.pokemonSeleccionado = null;
     },
     ocultar() {
       this.$emit('ocultar');

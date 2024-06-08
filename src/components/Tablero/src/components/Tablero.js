@@ -1,4 +1,3 @@
-/* import pokemonService from '../../../../services/pokemonService'; */
 import * as pokebolaService from '../../../../services/pokebolaService';
 import ModalPokemon from '../../../ModalPokemon.vue';
 import ModalBorrarPokemon from '../../../ModalBorrarPokemon.vue';

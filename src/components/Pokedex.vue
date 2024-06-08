@@ -1,4 +1,5 @@
 <template>
+  <ModalPokemon :pokemonSeleccionado="pokemonSeleccionado"/>
   <div class="pokedex">
 
     <img class="title" src="../assets/poke.png" alt="">
@@ -16,7 +17,7 @@
         <h2>{{ pokemonSeleccionado.name }}</h2>
         <p>#{{ pokemonSeleccionado.id }}</p>
       </div>
-      <div class="circle"></div>
+     
       <img class="pokemon-image" :src="pokemonImgSrc" :alt="pokemonSeleccionado.name" />
 
       <div class="card-body">
@@ -47,7 +48,7 @@ export default {
       sugerencias: [],
       pokemonSeleccionado: null,
       pokemonImgSrc: null,
-      species: null
+      
     };
   },
   mounted(){
@@ -96,11 +97,11 @@ export default {
     clearSearch(){
       this.query='',
       this.suggestions = [];
-      this.pokeElegido = null;
-      this.pokeElegidoColor = '';
+      this.pokemonSeleccionado = null;
+      this.pokemonSeleccionadoColor = '';
     },
     emitPokemon() {
-      this.$emit('pokemon-selected', this.pokeElegido);
+      this.$emit('pokemon-selected', this.pokemonSeleccionado);
       
     },
   },
