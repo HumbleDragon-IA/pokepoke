@@ -2,12 +2,17 @@
 <template>
 
   <div id="principal" class="container mt-3">
-    <div >
+    <div class="container">
       <br>
       <Navbar/>
       <RouterView />    
     </div>
   </div>
+  <footer class="footer mt-auto py-3 bg-dark text-white text-center">
+      <div class="container">
+        <span>Trabajo Práctico Programación en Nuevas Tecnologías II - Benvin - Leybovich - Lutteri - Montalti</span>
+      </div>
+  </footer>
 
 </template>
 
@@ -32,7 +37,16 @@ body {
   background-size: cover;
   background-attachment: fixed;
   position: relative;
-  height: 100vh
+  min-height: 100vh
+}
+
+#principal{
+  min-height: 100vh;
+  padding-bottom: 25px;
+}
+
+footer {
+  margin-top: 25px;
 }
 
 

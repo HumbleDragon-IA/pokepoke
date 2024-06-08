@@ -52,7 +52,6 @@ export default {
   methods: {
     async searchPokemon() {
       if (this.query.length > 0) {
-        // Check if the query is a number (ID)
         if (!isNaN(this.query)) {
           try {
             const pokemon = await pokemonService.getPokemonDetails(this.query);
@@ -84,7 +83,6 @@ export default {
       try {
         this.pokemonSeleccionado = await pokemonService.getPokemonDetails(name);
         const species = await pokemonService.getPokemonSpecies(name);
-        console.log(this.pokemonSeleccionado);
         this.sugerencias = [];
         this.query = name;
         this.pokemonImgSrc = this.pokemonSeleccionado.sprites.other["official-artwork"].front_default
@@ -136,13 +134,14 @@ input {
   box-sizing: border-box;
   border: none;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background-color: #343A40;
+  color: white;
 }
 
 .suggestion-list {
   list-style: none;
   padding: 5px;
   margin: 0;
-  background: white;
   border: 1px solid #ccc;
   position: relative;
   width: 100%;
@@ -160,11 +159,13 @@ input {
   text-transform: capitalize;
   justify-content:first baseline;
   align-items: center;
+  background-color: #343A40;
+  color: white;
 
 }
 
 .suggestion-list li:hover {
-  background-color: #f0f0f0;
+  background-color: #4f565c;
 }
 
 .card-container {
