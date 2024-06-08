@@ -93,6 +93,16 @@ export default {
         console.error('Error al traer detalles del pokemon:', error);
       }
     },
+    clearSearch(){
+      this.query='',
+      this.suggestions = [];
+      this.pokeElegido = null;
+      this.pokeElegidoColor = '';
+    },
+    emitPokemon() {
+      this.$emit('pokemon-selected', this.pokeElegido);
+      
+    },
   },
   computed: {
     selectedPokemonTypesIcons() {
@@ -111,7 +121,8 @@ export default {
         return typeColorMap[type];
       }
       return '#f7f7f7';
-    }
+    },
+    
   }
 };
 </script>

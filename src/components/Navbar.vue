@@ -14,18 +14,9 @@
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-
-
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          
-          <li class="nav-item">
-            <RouterLink class="nav-link" to="/principal">Principal</RouterLink>
-          </li>
-           <li class="nav-item">
-            <RouterLink class="nav-link" to="/tablerojugador">TableroJugador</RouterLink>
-          </li> 
+
           <li class="nav-item">
             <RouterLink class="nav-link" to="/pokedex">Pokedex</RouterLink>
           </li>
@@ -33,8 +24,8 @@
           <li class="nav-item">
             <RouterLink class="nav-link" to="/tablero">Tablero</RouterLink>
           </li>
-          
-      
+
+
         </ul>
         <img class="banner-img d-none d-lg-block" src="../assets/Magikarp.webp" alt="">
       </div>
@@ -68,7 +59,6 @@ export default {
 </script>
 
 <style scoped lang="css">
-
 .src-components-navbar {
   margin-top: 5vh;
 }
@@ -76,5 +66,4 @@ export default {
 nav {
   height: 70px;
 }
-
 </style>
