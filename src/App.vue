@@ -4,10 +4,7 @@
   <div id="principal" class="container mt-3">
     <div class="container">
       <br>
-<<<<<<< HEAD
       <Register/>
-=======
->>>>>>> 8097184fdc4f1a8e14c310bbddb7b1a2da6dbf6c
       <Navbar/>
       <RouterView />    
     </div>
