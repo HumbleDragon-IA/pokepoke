@@ -36,10 +36,10 @@ import Pokedex from './Pokedex.vue';
 
 export default {
   name: 'ModalPokemon',
-  props: ['mostrar', 'editarId', 'pokemonId', ],
+  props: ['mostrar', 'editarId', 'pokemonId', 'pokemonSeleccionadoId' ],
   components: { Pokedex },
     mounted() {
-
+      
     console.log(this.pokemonSeleccionado)
     this.modal = new Modal(document.getElementById('exampleModal'), {
       keyboard: false,
@@ -61,6 +61,7 @@ export default {
   methods: {
 
     updatePokemonSeleccionado(pokemon) {
+      console.log(pokemon)
       this.pokemonSeleccionado = pokemon;
     },
     show() {
@@ -71,6 +72,7 @@ export default {
       this.modal.hide();
     },
     submit() {
+      console.log(this.pokemonSeleccionadoId)
       if (this.pokemonSeleccionado) {
         this.$emit('enviar', this.pokemonSeleccionado);
       } else {

@@ -1,5 +1,5 @@
 <template>
-  <ModalPokemon :pokemonSeleccionado="pokemonSeleccionado"/>
+  <ModalPokemon :pokemonSeleccionadoId="this.pokemonSeleccionado"/>
   <div class="pokedex">
 
     <img class="title" src="../assets/poke.png" alt="">
@@ -89,6 +89,7 @@ export default {
         this.pokemonSeleccionado = await pokemonService.getPokemonDetails(name);
         this.sugerencias = [];
         this.query = name;
+        this.emitPokemon();
         this.pokemonImgSrc = this.pokemonSeleccionado.sprites.other["official-artwork"].front_default
       } catch (error) {
         console.error('Error al traer detalles del pokemon:', error);
