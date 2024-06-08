@@ -5,7 +5,7 @@ const API_BASE_URL = 'https://pokeapi.co/api/v2';
 const pokemonService = {
   async getAllPokemon() {
     try {
-      const response = await axios.get(`${API_BASE_URL}/pokemon?limit=151`);
+      const response = await axios.get(`${API_BASE_URL}/pokemon?limit=1000`);
       return response.data.results;
     } catch (error) {
       console.error('Error fetching Pokémon list:', error);
