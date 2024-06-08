@@ -3,19 +3,20 @@
 
     <img class="title" src="../assets/poke.png" alt="">
 
-    <input type="text" v-model="query" placeholder="Type Pokémon name or ID" @input="searchPokemon" />
-    <ul v-if="suggestions.length" class="suggestion-list">
-      <li v-for="suggestion in suggestions" :key="suggestion.name" @click="selectPokemon(suggestion.name)">
+    <input type="text" v-model="query" placeholder="Escribi el nombre del Pokemon o su ID" @input="searchPokemon" />
+
+    <ul v-if="sugerencias.length" class="suggestion-list">
+      <li v-for="suggestion in sugerencias" :key="suggestion.name" @click="selectPokemon(suggestion.name)">
         {{ suggestion.name }}
       </li>
     </ul>
-    <div v-if="selectedPokemon" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
+    <div v-if="pokemonSeleccionado" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
       <div class="card-header">
-        <h2>{{ selectedPokemon.name }}</h2>
-        <p>#{{ selectedPokemon.id }}</p>
+        <h2>{{ pokemonSeleccionado.name }}</h2>
+        <p>#{{ pokemonSeleccionado.id }}</p>
       </div>
       <div class="circle"></div>
-      <img class="pokemon-image" :src="pokemonImgSrc" :alt="selectedPokemon.name" />
+      <img class="pokemon-image" :src="pokemonImgSrc" :alt="pokemonSeleccionado.name" />
 
       <div class="card-body">
         <div class="stats">
@@ -23,7 +24,7 @@
           <hr>
           <ul>
             <li><strong>Type:</strong> {{ selectedPokemonTypesIcons }}</li>
-            <li v-for="stat in selectedPokemon.stats" :key="stat.stat.name">
+            <li v-for="stat in pokemonSeleccionado.stats" :key="stat.stat.name">
               <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
             </li>
           </ul>
@@ -36,13 +37,14 @@
 
 <script>
 import pokemonService from '../services/pokemonService';
+import { typeEmojiMap, typeColorMap } from '@/utils/PokemonDicc';
 
 export default {
   data() {
     return {
       query: '',
-      suggestions: [],
-      selectedPokemon: null,
+      sugerencias: [],
+      pokemonSeleccionado: null,
       pokemonImgSrc: null,
     };
   },
@@ -53,33 +55,33 @@ export default {
         if (!isNaN(this.query)) {
           try {
             const pokemon = await pokemonService.getPokemonDetails(this.query);
-            this.suggestions = [{ name: pokemon.name }];
+            this.sugerencias = [{ name: pokemon.name }];
           } catch (error) {
-            console.error('Error fetching Pokémon by ID:', error);
-            this.suggestions = [];
+            console.error('Error al traer Pokémon by ID:', error);
+            this.sugerencias = [];
           }
         } else {
           try {
             const allPokemon = await pokemonService.getAllPokemon();
-            this.suggestions = allPokemon.filter(pokemon =>
+            this.sugerencias = allPokemon.filter(pokemon =>
               pokemon.name.includes(this.query.toLowerCase())
             );
           } catch (error) {
-            console.error('Error fetching Pokémon list:', error);
+            console.error('Error al traer la lista de pokemones:', error);
           }
         }
       } else {
-        this.suggestions = [];
+        this.sugerencias = [];
       }
     },
     async selectPokemon(name) {
       try {
-        this.selectedPokemon = await pokemonService.getPokemonDetails(name);
+        this.pokemonSeleccionado = await pokemonService.getPokemonDetails(name);
         const species = await pokemonService.getPokemonSpecies(name);
-        console.log(this.selectedPokemon);
-        this.suggestions = [];
+        console.log(this.pokemonSeleccionado);
+        this.sugerencias = [];
         this.query = name;
-        this.pokemonImgSrc = this.selectedPokemon.sprites.other["official-artwork"].front_default
+        this.pokemonImgSrc = this.pokemonSeleccionado.sprites.other["official-artwork"].front_default
       } catch (error) {
         console.error('Error fetching Pokémon details:', error);
       }
@@ -87,65 +89,24 @@ export default {
   },
   computed: {
     selectedPokemonTypesIcons() {
-      const typeDictionary = {
-        bug: "🐞",
-        dark: "🌙",
-        dragon: "🐲",
-        electric: "⚡",
-        fairy: "✨",
-        fighting: "🥊",
-        fire: "🔥",
-        flying: "🌪️",
-        ghost: "👻",
-        grass: "🌿",
-        ground: "🗿",
-        ice: "❄️",
-        normal: "⚪",
-        poison: "☠️",
-        psychic: "🧠",
-        rock: "⛰️",
-        steel: "🛡️",
-        water: "💧"
-      };
       let types = [];
-      if (this.selectedPokemon) {
-        this.selectedPokemon.types.forEach(element => {
-          types.push(typeDictionary[element.type.name]);
+      if (this.pokemonSeleccionado) {
+        this.pokemonSeleccionado.types.forEach(element => {
+          types.push(typeEmojiMap[element.type.name]);
         });
       }
       return types.join(" ");
     },
     selectedPokemonTypeColor() {
-      const colors = {
-        grass: "#d2f2c2",
-        poison: "#f7cdf7",
-        fire: "#ffd1b5",
-        flying: "#eae3ff",
-        water: "#c2f3ff",
-        bug: "#e0e8a2",
-        normal: "#e6e6c3",
-        electric: "#fff1ba",
-        ground: "#e0ccb1",
-        fighting: "#fcada9",
-        psychic: "#ffc9da",
-        rock: "#f0e09c",
-        fairy: "#ffdee5",
-        steel: "#e6eaf0",
-        ice: "#e8feff",
-        ghost: "#dbbaff",
-        dragon: "#c4bdff",
-        dark: "#a9abb0"
-      };
-      if (this.selectedPokemon) {
-        let type = this.selectedPokemon.types[0].type.name;
-        return colors[type];
+
+
+      if (this.pokemonSeleccionado) {
+        let type = this.pokemonSeleccionado.types[0].type.name;
+        return typeColorMap[type];
       }
       return '#f7f7f7';
     }
   }
-
-
-
 };
 </script>
 
@@ -165,8 +126,10 @@ export default {
 
 input {
   width: 100%;
-  padding: 8px;
-  margin: 20px 0;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
 }
 
 .suggestion-list {
@@ -202,12 +165,12 @@ input {
   border-radius: 10px;
   padding: 20px;
   background-color: #f7f7f7;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   position: relative;
   overflow: hidden;
   border: solid white 10px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
 
 .pokemon-card::before {
@@ -223,14 +186,13 @@ input {
   background-position: center;
   opacity: 1.5;
   z-index: 1;
-  mix-blend-mode: multiply; 
+  mix-blend-mode: multiply;
 }
 
-.pokemon-card > * {
+.pokemon-card>* {
   position: relative;
   z-index: 2;
 }
-
 
 .card-header {
   height: 50px;
