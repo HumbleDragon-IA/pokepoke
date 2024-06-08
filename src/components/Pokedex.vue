@@ -1,31 +1,31 @@
 <template>
-  <ModalPokemon :pokeElegido="pokeElegido"/>
   <div class="pokedex">
-    <h1>Pokédex</h1>
-    <input
-      type="text"
-      v-model="query"
-      placeholder="Type Pokémon name or ID"
-      @input="searchPokemon"
-    />
-    <ul v-if="suggestions.length" class="suggestion-list">
-      <li v-for="suggestion in suggestions" :key="suggestion.name" @click="selectPokemon(suggestion.name)">
-        {{ suggestion.name }}
+
+    <img class="title" src="../assets/poke.png" alt="">
+
+    <input type="text" v-model="query" placeholder="Escribi el nombre del Pokemon o su ID" @input="searchPokemon" />
+
+    <ul v-if="sugerencias.length" class="suggestion-list">
+      <li v-for="suggestion in sugerencias" :key="suggestion.name" @click="selectPokemon(suggestion.name)">
+        <span><img alt="" srcset="" :src="suggestion.sprite"></span>
+        <span>{{ suggestion.name }}</span>
       </li>
     </ul>
-    <div class="card-container">
-    <div v-if="pokeElegido" class="pokemon-card">
-      <div class="card-header" :style="{ backgroundColor: pokeElegidoColor }">
-        <h2>{{ pokeElegido.name }}</h2>
-        <p>#{{ pokeElegido.id }}</p>
+    <div v-if="pokemonSeleccionado" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
+      <div class="card-header">
+        <h2>{{ pokemonSeleccionado.name }}</h2>
+        <p>#{{ pokemonSeleccionado.id }}</p>
       </div>
-      <img class="pokemon-image" :src="pokeElegido.sprites.front_default" :alt="pokeElegido.name" :style="{ backgroundColor: pokeElegidoColor }" />
+      <div class="circle"></div>
+      <img class="pokemon-image" :src="pokemonImgSrc" :alt="pokemonSeleccionado.name" />
+
       <div class="card-body">
-        <p><strong>Type:</strong> {{ pokeElegido.types[0].type.name }}</p>
         <div class="stats">
           <h3>Stats</h3>
+          <hr>
           <ul>
-            <li v-for="stat in pokeElegido.stats" :key="stat.stat.name">
+            <li><strong>Type:</strong> {{ selectedPokemonTypesIcons }}</li>
+            <li v-for="stat in pokemonSeleccionado.stats" :key="stat.stat.name">
               <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
             </li>
           </ul>
@@ -33,20 +33,21 @@
       </div>
     </div>
   </div>
-  </div>
+
 </template>
 
 <script>
 import pokemonService from '../services/pokemonService';
+import { typeEmojiMap, typeColorMap } from '@/utils/PokemonDicc';
 
 export default {
-  props:[],
   data() {
     return {
       query: '',
-      suggestions: [],
-      pokeElegido: null,
-      pokeElegidoColor: '',
+      sugerencias: [],
+      pokemonSeleccionado: null,
+      pokemonImgSrc: null,
+      species: null
     };
   },
   mounted(){
@@ -55,185 +56,222 @@ export default {
   methods: {
     async searchPokemon() {
       if (this.query.length > 0) {
-        // Check if the query is a number (ID)
         if (!isNaN(this.query)) {
           try {
             const pokemon = await pokemonService.getPokemonDetails(this.query);
-            this.suggestions = [{ name: pokemon.name }];
+            this.sugerencias = [
+              {
+                name: pokemon.name,
+                sprite: pokemon.sprites.front_default,
+              }
+            ];
           } catch (error) {
-            console.error('Error fetching Pokémon by ID:', error);
-            this.suggestions = [];
+            console.error('Error al traer Pokémon by ID:', error);
+            this.sugerencias = [];
           }
         } else {
           try {
             const allPokemon = await pokemonService.getAllPokemon();
-            this.suggestions = allPokemon.filter(pokemon =>
-              pokemon.name.includes(this.query.toLowerCase())
+            this.sugerencias = allPokemon.filter(pokemon =>
+            pokemon.name.includes(this.query.toLowerCase())
             );
           } catch (error) {
-            console.error('Error fetching Pokémon list:', error);
+            console.error('Error al traer la lista de pokemones:', error);
           }
         }
       } else {
-        this.suggestions = [];
+        this.sugerencias = [];
       }
     },
     async selectPokemon(name) {
       try {
-      this.pokeElegido = await pokemonService.getPokemonDetails(name);
-      const species = await pokemonService.getPokemonSpecies(name);
-      this.pokeElegidoColor = species.color.name;
-      this.suggestions = [];
-      this.query = name;
-      this.emitPokemon();
-    } catch (error) {
-      console.error('Error fetching Pokémon details:', error);
-    }
-    },
-    clearSearch(){
-      this.query='',
-      this.suggestions = [];
-      this.pokeElegido = null;
-      this.pokeElegidoColor = '';
-    },
-    emitPokemon() {
-      this.$emit('pokemon-selected', this.pokeElegido);
-      
+        this.pokemonSeleccionado = await pokemonService.getPokemonDetails(name);
+        this.sugerencias = [];
+        this.query = name;
+        this.pokemonImgSrc = this.pokemonSeleccionado.sprites.other["official-artwork"].front_default
+      } catch (error) {
+        console.error('Error al traer detalles del pokemon:', error);
+      }
     },
   },
+  computed: {
+    selectedPokemonTypesIcons() {
+      let types = [];
+      if (this.pokemonSeleccionado) {
+        this.pokemonSeleccionado.types.forEach(element => {
+          types.push(typeEmojiMap[element.type.name]);
+        });
+      }
+      return types.join(" ");
+    },
+    selectedPokemonTypeColor() {
+
+      if (this.pokemonSeleccionado) {
+        let type = this.pokemonSeleccionado.types[0].type.name;
+        return typeColorMap[type];
+      }
+      return '#f7f7f7';
+    }
+  }
 };
 </script>
 
 <style scoped>
 .pokedex {
-max-width: 400px;
-margin: 0 auto;
-text-align: center;
-position: relative;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.title {
+  margin-top: 1rem;
+  width: 100%;
+
 }
 
 input {
-width: 100%;
-padding: 8px;
-margin: 20px 0;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background-color: #343A40;
+  color: white;
 }
 
 .suggestion-list {
-list-style: none;
-padding: 0;
-margin: 0;
-background: white;
-border: 1px solid #ccc;
-position: absolute;
-width: 100%;
-max-height: 150px;
-overflow-y: auto;
-z-index: 10;
+  list-style: none;
+  padding: 5px;
+  margin: 0;
+  border: 1px solid #ccc;
+  position: relative;
+  width: 100%;
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 10;
+  font-size: 20px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
 }
 
 .suggestion-list li {
-padding: 8px;
-cursor: pointer;
+  cursor: pointer;
+  display: flex;
+  text-transform: capitalize;
+  justify-content:first baseline;
+  align-items: center;
+  background-color: #343A40;
+  color: white;
+
 }
 
 .suggestion-list li:hover {
-background-color: #f0f0f0;
+  background-color: #4f565c;
 }
 
 .card-container {
-display: flex;
-justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .pokemon-card {
-margin-top: 20px;
-border: 2px solid #ddd;
-border-radius: 10px;
-padding: 20px;
-background-color: #f7f7f7;
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-text-align: left;
-font-family: 'Arial', sans-serif;
-position: relative;
-overflow: hidden;
-border: solid black 5px;
-background-color: rgb(235, 235, 235);
-width: 500px;
+  height: auto;
+  margin-top: 20px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  text-align: left;
+  font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
+  position: relative;
+  overflow: hidden;
+  border: solid white 10px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+
+.pokemon-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url('../assets/card-texture.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1.5;
+  z-index: 1;
+  mix-blend-mode: multiply;
+}
+
+.pokemon-card>* {
+  position: relative;
+  z-index: 2;
 }
 
 .card-header {
-color: black;
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 10px;
-border-style: inset;
-font-size: 50px;
-font-weight: bolder;
-border-width: 4px;
+  height: 50px;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 50px;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .card-header h2 {
-text-transform: capitalize;
-margin: 0;
-font-size: 24px;
-font-weight: bolder;
-font-style: oblique;
-font-family: Arial, Helvetica, sans-serif;
+  text-transform: capitalize;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
 }
 
 .card-header p {
-font-size: 18px;
-font-weight: bold;
+  font-size: 20px;
+  font-weight: bolder;
 }
 
 .pokemon-image {
-display: block;
-margin: 0 auto;
-width: 250px; 
-height: 250px; 
-background: black;
-border: solid 10px black;
-border-radius: 50%;
-padding: 0; 
-box-sizing: border-box; 
-}
-
-.card-body {
-padding: 10px;
-}
-
-.card-body p {
-margin: 10px 0;
-text-transform: capitalize;
+  display: block;
+  margin: 0 auto;
+  width: 250px;
+  height: 250px;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .stats {
-margin-top: 20px;
-border: solid black 3px;
-padding: 25px;
+  margin-top: -10px;
+  margin-bottom: -30px;
+  border: solid black 3px;
+  padding: 25px;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .stats h3 {
-margin: 0;
-padding: 0;
-font-size: 20px;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
 }
 
 .stats ul {
-list-style: none;
-padding: 0;
-margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .stats ul li {
-padding: 5px 0;
-display: flex;
-justify-content: space-between;
+  padding: 2px 0;
+  display: flex;
+  justify-content: space-between;
 }
 
 .stats ul li strong {
-text-transform: capitalize;
+  text-transform: capitalize;
 }
-
 </style>

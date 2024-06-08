@@ -1,26 +1,19 @@
 
-<template class="">
-  <div id="fondo" class="background">
+<template>
+
   <div id="principal" class="container mt-3">
-    
-    <div >
-      <div class="">
-      <h1>Ortemon</h1>
-      
+    <div class="container">
       <br>
-
       <Navbar/>
-
-      <RouterView />
-    
-
-      
-       
-      
+      <RouterView />    
     </div>
   </div>
-</div>
-</div>
+  <footer class="footer mt-auto py-3 bg-dark text-white text-center">
+      <div class="container">
+        <span>Trabajo Práctico Programación en Nuevas Tecnologías II - Benvin - Leybovich - Lutteri - Montalti</span>
+      </div>
+  </footer>
+
 </template>
 
 <script>
@@ -35,26 +28,27 @@ export default {
 </script>
 
 
-<style scoped>
-#app{
-  background-color: black;
-  /* background-image:  url('@/assets/pokebola.jpg'); */
-}
-#logo{
-  width: 1000px;
+<style>
+
+body {
+  background-image: url("./assets/pokeball-pc-hd.webp");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  position: relative;
+  min-height: 100vh
 }
 
 #principal{
+  min-height: 100vh;
+  padding-bottom: 25px;
+}
 
+footer {
+  margin-top: 25px;
 }
-.background {
-  height: 100vh; /* Hace que el contenedor ocupe toda la altura de la ventana */
-  margin: 0;
-  padding: 0;
-  background-image: url('@/assets/pokebola.jpg'); /* URL de tu imagen de fondo */
-  background-size: cover; /* Ajusta el tamaño de la imagen para cubrir toda la página */
-  background-repeat: no-repeat; /* Evita que la imagen se repita */
-  background-attachment: fixed; /* Hace que la imagen de fondo se mantenga fija al hacer scroll */
-  background-position: center; /* Centra la imagen de fondo */
-}
+
+
+
 </style>
