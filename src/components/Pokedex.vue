@@ -44,6 +44,7 @@ export default {
       suggestions: [],
       selectedPokemon: null,
       pokemonImgSrc: null,
+      species: null
     };
   },
   methods: {
@@ -75,7 +76,7 @@ export default {
     async selectPokemon(name) {
       try {
         this.selectedPokemon = await pokemonService.getPokemonDetails(name);
-        const species = await pokemonService.getPokemonSpecies(name);
+        this.species = await pokemonService.getPokemonSpecies(name);
         console.log(this.selectedPokemon);
         this.suggestions = [];
         this.query = name;
