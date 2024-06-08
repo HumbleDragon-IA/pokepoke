@@ -80,7 +80,7 @@ export default {
         speed: speed,
         numero: poke.id,
         hp: hp,
-        image: poke.sprites.front_default,
+        image: poke.sprites.other["showdown"].front_default
       };
   
       try {
