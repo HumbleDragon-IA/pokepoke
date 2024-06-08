@@ -1,5 +1,5 @@
 <template>
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Registrarse</button>
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="registro">Registrarse</button>
   <div
     class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -118,8 +118,4 @@ export default {
 </script>
 
 <style scoped>
-.btn {
-  margin-left: 1000px;
-  margin-bottom: 8px;
-}
 </style>
