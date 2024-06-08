@@ -1,19 +1,14 @@
 
 <template>
-  <div id="fondo" class="background">
-  <div id="principal" class="container mt-3">
-    
-    <div >
-      <div class="">
-      
-      <br>
 
+  <div id="principal" class="container mt-3">
+    <div >
+      <br>
       <Navbar/>
       <RouterView />    
     </div>
   </div>
-</div>
-</div>
+
 </template>
 
 <script>
@@ -35,6 +30,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  background-attachment: fixed;
   position: relative;
   height: 100vh
 }

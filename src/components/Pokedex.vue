@@ -140,7 +140,7 @@ input {
 
 .suggestion-list {
   list-style: none;
-  padding: 0;
+  padding: 5px;
   margin: 0;
   background: white;
   border: 1px solid #ccc;
@@ -150,7 +150,8 @@ input {
   overflow-y: auto;
   z-index: 10;
   font-size: 20px;
-  
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
 }
 
 .suggestion-list li {
@@ -172,6 +173,7 @@ input {
 }
 
 .pokemon-card {
+  height: auto;
   margin-top: 20px;
   border: 2px solid #ddd;
   border-radius: 10px;
