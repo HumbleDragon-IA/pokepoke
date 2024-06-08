@@ -83,7 +83,6 @@ export default {
     async selectPokemon(name) {
       try {
         this.pokemonSeleccionado = await pokemonService.getPokemonDetails(name);
-        const species = await pokemonService.getPokemonSpecies(name);
         this.sugerencias = [];
         this.query = name;
         this.pokemonImgSrc = this.pokemonSeleccionado.sprites.other["official-artwork"].front_default
