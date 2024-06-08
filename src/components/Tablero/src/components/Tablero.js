@@ -1,4 +1,4 @@
-import pokemonService from '../../../../services/pokemonService';
+/* import pokemonService from '../../../../services/pokemonService'; */
 import * as pokebolaService from '../../../../services/pokebolaService';
 import ModalPokemon from '../../../ModalPokemon.vue';
 import ModalBorrarPokemon from '../../../ModalBorrarPokemon.vue';
@@ -14,9 +14,6 @@ export default {
   data() {
     return {
       pokemones: [],
-      query: '',
-      suggestions: [],
-      selectedPokemon: null,
       mostrar: false,
       editarId: null,
       pokemonId: {},
@@ -51,37 +48,6 @@ export default {
         await this.postPoke(poke);
       }
     },
-    async searchPokemon() {
-      if (this.query.length > 0) {
-        if (!isNaN(this.query)) {
-          try {
-            const pokemon = await pokemonService.getPokemonDetails(this.query);
-            this.suggestions = [{ name: pokemon.name }];
-          } catch (error) {
-            console.error('Error fetching Pokémon by ID:', error);
-            this.suggestions = [];
-          }
-        } else {
-          try {
-            const allPokemon = await pokemonService.getAllPokemon();
-            this.suggestions = allPokemon.filter(pokemon => pokemon.name.includes(this.query.toLowerCase()));
-          } catch (error) {
-            console.error('Error fetching Pokémon list:', error);
-          }
-        }
-      } else {
-        this.suggestions = [];
-      }
-    },
-    async selectPokemon(name) {
-      try {
-        this.selectedPokemon = await pokemonService.getPokemonDetails(name);
-        this.suggestions = [];
-        this.query = name;
-      } catch (error) {
-        console.error('Error fetching Pokémon details:', error);
-      }
-    },
     async getPoke() {
       const pokemones = await pokebolaService.getAll();
       this.pokemones = pokemones;
@@ -91,9 +57,14 @@ export default {
       console.log(pokeActualizado);
     },
     async postPoke(poke) {
+      if (!poke || !poke.types || !poke.stats) {
+        console.error('Invalid Pokémon data:', poke);
+        return;
+      }
+  
       const tipoDeAtaque = poke.types.map(typeInfo => typeInfo.type.name).join(', ');
-      const ataque = poke.stats.find(stat => stat.stat.name === 'attack').base_stat;
-
+      const ataque = poke.stats.find(stat => stat.stat.name === 'attack')?.base_stat || 0;
+  
       const nuevoPoke = {
         nombre: poke.name,
         nivel: 1,
@@ -102,7 +73,7 @@ export default {
         numero: poke.id,
         image: poke.sprites.front_default,
       };
-
+  
       try {
         const pokeGuardado = await pokebolaService.post(nuevoPoke);
         this.pokemones.push(pokeGuardado);
@@ -114,7 +85,7 @@ export default {
       console.log(id);
       const pokeEliminado = await pokebolaService.del(id);
       console.log(pokeEliminado, 'delete');
-
+  
       const index = this.pokemones.findIndex(pokemon => pokemon.id === pokeEliminado.id);
       this.pokemones.splice(index, 1);
     },

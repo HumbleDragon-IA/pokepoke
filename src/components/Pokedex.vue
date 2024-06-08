@@ -1,4 +1,5 @@
 <template>
+  <ModalPokemon :pokeElegido="pokeElegido"/>
   <div class="pokedex">
     <h1>Pokédex</h1>
     <input
@@ -13,18 +14,18 @@
       </li>
     </ul>
     <div class="card-container">
-    <div v-if="selectedPokemon" class="pokemon-card">
-      <div class="card-header" :style="{ backgroundColor: selectedPokemonColor }">
-        <h2>{{ selectedPokemon.name }}</h2>
-        <p>#{{ selectedPokemon.id }}</p>
+    <div v-if="pokeElegido" class="pokemon-card">
+      <div class="card-header" :style="{ backgroundColor: pokeElegidoColor }">
+        <h2>{{ pokeElegido.name }}</h2>
+        <p>#{{ pokeElegido.id }}</p>
       </div>
-      <img class="pokemon-image" :src="selectedPokemon.sprites.front_default" :alt="selectedPokemon.name" :style="{ backgroundColor: selectedPokemonColor }" />
+      <img class="pokemon-image" :src="pokeElegido.sprites.front_default" :alt="pokeElegido.name" :style="{ backgroundColor: pokeElegidoColor }" />
       <div class="card-body">
-        <p><strong>Type:</strong> {{ selectedPokemon.types[0].type.name }}</p>
+        <p><strong>Type:</strong> {{ pokeElegido.types[0].type.name }}</p>
         <div class="stats">
           <h3>Stats</h3>
           <ul>
-            <li v-for="stat in selectedPokemon.stats" :key="stat.stat.name">
+            <li v-for="stat in pokeElegido.stats" :key="stat.stat.name">
               <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
             </li>
           </ul>
@@ -39,13 +40,17 @@
 import pokemonService from '../services/pokemonService';
 
 export default {
+  props:[],
   data() {
     return {
       query: '',
       suggestions: [],
-      selectedPokemon: null,
-      selectedPokemonColor: '',
+      pokeElegido: null,
+      pokeElegidoColor: '',
     };
+  },
+  mounted(){
+    this.clearSearch()
   },
   methods: {
     async searchPokemon() {
@@ -75,15 +80,25 @@ export default {
     },
     async selectPokemon(name) {
       try {
-        this.selectedPokemon = await pokemonService.getPokemonDetails(name);
-        const species = await pokemonService.getPokemonSpecies(name);
-        console.log(this.selectedPokemon);
-        this.selectedPokemonColor = species.color.name;
-        this.suggestions = [];
-        this.query = name;
-      } catch (error) {
-        console.error('Error fetching Pokémon details:', error);
-      }
+      this.pokeElegido = await pokemonService.getPokemonDetails(name);
+      const species = await pokemonService.getPokemonSpecies(name);
+      this.pokeElegidoColor = species.color.name;
+      this.suggestions = [];
+      this.query = name;
+      this.emitPokemon();
+    } catch (error) {
+      console.error('Error fetching Pokémon details:', error);
+    }
+    },
+    clearSearch(){
+      this.query='',
+      this.suggestions = [];
+      this.pokeElegido = null;
+      this.pokeElegidoColor = '';
+    },
+    emitPokemon() {
+      this.$emit('pokemon-selected', this.pokeElegido);
+      
     },
   },
 };

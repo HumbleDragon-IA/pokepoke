@@ -13,29 +13,9 @@
             <form class="m-3" @submit.prevent="submit">
               <div class="form-group">
                 <label for="nombre">Nombre o ID</label>
-                <div>
-                  <input type="text" v-model="query" placeholder="Type Pokémon name or ID" @input="searchPokemon" />
-                  <ul v-if="suggestions.length" class="suggestion-list">
-                    <li v-for="suggestion in suggestions" :key="suggestion.name" @click="selectPokemon(suggestion.name)">
-                      {{ suggestion.name }}
-                    </li>
-                  </ul>
-                  <div v-if="selectedPokemon && muestra" class="pokemon-card">
-                    <h2>{{ selectedPokemon.name }}</h2>
-                    <img :src="selectedPokemon.sprites.front_default" :alt="selectedPokemon.name" />
-                    <p><strong>Height:</strong> {{ selectedPokemon.height }} dm</p>
-                    <p><strong>Weight:</strong> {{ selectedPokemon.weight }} hg</p>
-                    <div class="stats">
-                      <h3>Stats</h3>
-                      <ul>
-                        <li v-for="stat in selectedPokemon.stats" :key="stat.stat.name">
-                          <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
-                        </li>
-                      </ul>
-                     
-                    </div>
-                  </div>
-                </div>
+
+                <Pokedex ref="pokedex" @pokemon-selected="updateSelectedPokemon"></Pokedex>
+           
               </div>
               <button :disabled="!pokemonValido" :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']" >
                 {{ editarId ? 'Actualizar' : 'Agregar' }}
@@ -55,13 +35,13 @@
 
 <script>
 import { Modal } from 'bootstrap';
-import pokemonService from '@/services/pokemonService';
-
+/* import pokemonService from '@/services/pokemonService'; */
+import Pokedex from './Pokedex.vue';
 
 export default {
   name: 'ModalPokemon',
-  props: ['mostrar', 'editarId', 'pokemonId'],
-
+  props: ['mostrar', 'editarId', 'pokemonId','pokeElegido'],
+components: {Pokedex},
   beforeCreate(){
     console.log('beforeuCreate')
 
@@ -71,13 +51,15 @@ export default {
   },
   beforMount(){
     console.log('beforemount')
+
   },
   mounted() {
     
-    console.log('mounted')
+    console.log(this.pokeElegido)
     this.modal = new Modal(document.getElementById('exampleModal'), {
       keyboard: false,
       backdrop: 'static',
+      
     });
   },
 
@@ -107,56 +89,32 @@ beforeUpdate(){
     };
   },
   methods: {
-    async selectPokemon(name) {
-      try {
-        this.selectedPokemon = await pokemonService.getPokemonDetails(name);
-        this.suggestions = [];
-        this.query = name;
-      } catch (error) {
-        console.error('Error fetching Pokémon details:', error);
-      }
-    },
-    async searchPokemon() {
-      if (this.query.length > 0) {
-        if (!isNaN(this.query)) {
-          try {
-            const pokemon = await pokemonService.getPokemonDetails(this.query);
-            this.suggestions = [{ name: pokemon.name }];
-          } catch (error) {
-            console.error('Error fetching Pokémon by ID:', error);
-            this.suggestions = [];
-          }
-        } else {
-          try {
-            const allPokemon = await pokemonService.getAllPokemon();
-            this.suggestions = allPokemon.filter(pokemon => pokemon.name.includes(this.query.toLowerCase()));
-          } catch (error) {
-            console.error('Error fetching Pokémon list:', error);
-          }
-        }
-      } else {
-        this.suggestions = [];
-      }
-    },
-    show() {
-      this.modal.show();
-    },
-    hide() {
-      this.modal.hide();
-    },
-    submit() {
-      
-      this.$emit('enviar', { ...this.selectedPokemon });
-      this.query='';
-      this.selectedPokemon=null;
-    },
-    ocultar() {
-      this.$emit('ocultar');
-    },
+   
+    updateSelectedPokemon(pokemon) {
+    this.selectedPokemon = pokemon;
+  },
+  show() {
+    this.modal.show();
+    this.$refs.pokedex.clearSearch()
+  },
+  hide() {
+    this.modal.hide();
+  },
+  submit() {
+    if (this.selectedPokemon) {
+      this.$emit('enviar', this.selectedPokemon);
+    } else {
+      console.error('No Pokémon selected');
+    }
+    this.selectedPokemon = null;
+  },
+  ocultar() {
+    this.$emit('ocultar');
+  },
   },
   computed: {
     pokemonValido() {
-      return this.selectedPokemon !== null;
+      return this.pokeElegido !== null;
     },
   },
   watch: {

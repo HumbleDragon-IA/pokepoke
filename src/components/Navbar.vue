@@ -25,9 +25,9 @@
             <RouterLink class="nav-link" to="/tablero">Tablero</RouterLink>
           </li>
 
-          <li class="nav-item">
+        <!--   <li class="nav-item">
             <RouterLink class="nav-link" to="/pokemoncard">PokemonCard</RouterLink>
-          </li>
+          </li> -->
           
       
         </ul>

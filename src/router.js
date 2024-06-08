@@ -3,7 +3,7 @@ import Principal from './components/Principal.vue';
 /* import TableroJugador from './components/TableroJugador.vue'; */
 import Pokedex from './components/Pokedex.vue';
 import Tablero from './components/Tablero/index.vue';
-import PokemonCard from './components/PokemonCard.vue';
+/* import PokemonCard from './components/PokemonCard.vue'; */
 
 const routes = [
   { path: '/', component: Tablero },
@@ -11,7 +11,7 @@ const routes = [
  /*  { path: '/tablerojugador', component: TableroJugador }, */
   { path: '/pokedex', component: Pokedex },
   { path: '/tablero', component: Tablero },
-  { path: '/pokemoncard', component: PokemonCard },
+ /*  { path: '/pokemoncard', component: PokemonCard }, */
   { path: '/:pathMatch(.*)*', component: Tablero }
 ];
 
