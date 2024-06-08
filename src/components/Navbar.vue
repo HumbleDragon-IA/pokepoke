@@ -11,13 +11,7 @@
     
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          
-          <li class="nav-item">
-            <RouterLink class="nav-link" to="/principal">Principal</RouterLink>
-          </li>
-           <li class="nav-item">
-            <RouterLink class="nav-link" to="/tablerojugador">TableroJugador</RouterLink>
-          </li> 
+        
           <li class="nav-item">
             <RouterLink class="nav-link" to="/pokedex">Pokedex</RouterLink>
           </li> 

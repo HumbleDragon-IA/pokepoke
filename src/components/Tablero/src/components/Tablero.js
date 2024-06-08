@@ -19,6 +19,7 @@ export default {
       pokemonId: {},
       mostrar2: false,
       borrarId: null,
+      stats:false
     };
   },
   methods: {
@@ -62,15 +63,24 @@ export default {
         return;
       }
   
-      const tipoDeAtaque = poke.types.map(typeInfo => typeInfo.type.name).join(', ');
+      const type = poke.types.map(typeInfo => typeInfo.type.name).join(', ');
       const ataque = poke.stats.find(stat => stat.stat.name === 'attack')?.base_stat || 0;
-  
+      const defense =poke.stats.find(stat => stat.stat.name === 'defense')?.base_stat || 0;
+      const specialAttack =poke.stats.find(stat => stat.stat.name === 'special-attack')?.base_stat || 0;
+      const specialDefense =poke.stats.find(stat => stat.stat.name === 'special-defense')?.base_stat || 0;
+      const speed =poke.stats.find(stat => stat.stat.name === 'speed')?.base_stat || 0;
+      const hp =poke.stats.find(stat => stat.stat.name === 'hp')?.base_stat || 0;
       const nuevoPoke = {
         nombre: poke.name,
         nivel: 1,
-        tipoDeAtaque: tipoDeAtaque,
+        type: type,
         ataque: ataque,
+        defense: defense,
+        specialAttack: specialAttack,
+        specialDefense: specialDefense,
+        speed: speed,
         numero: poke.id,
+        hp: hp,
         image: poke.sprites.front_default,
       };
   
@@ -88,6 +98,9 @@ export default {
   
       const index = this.pokemones.findIndex(pokemon => pokemon.id === pokeEliminado.id);
       this.pokemones.splice(index, 1);
+    },
+    verStats(){
+      this.stats=!this.stats
     },
   },
 };
