@@ -2,13 +2,11 @@
 <template>
   <div id="fondo" class="background">
   <div id="principal" class="container mt-3">
-    
     <div >
       <div class="">
       <h1>Ortemon</h1>
-      
       <br>
-
+      <Register></Register>
       <Navbar/>
       <RouterView />    
     </div>
@@ -19,11 +17,13 @@
 
 <script>
 import Navbar from './components/Navbar.vue'
+import Register from './components/Register.vue'
 
 export default {
   name: 'App',
   components: {
-  Navbar
+  Navbar,
+  Register
   }
 }
 </script>
