@@ -1,4 +1,3 @@
-
 <template>
 
   <div id="principal" class="container mt-3">
@@ -22,7 +21,8 @@ import Navbar from './components/Navbar.vue'
 export default {
   name: 'App',
   components: {
-  Navbar
+  Navbar,
+
   }
 }
 </script>
@@ -48,7 +48,5 @@ body {
 footer {
   margin-top: 25px;
 }
-
-
 
 </style>

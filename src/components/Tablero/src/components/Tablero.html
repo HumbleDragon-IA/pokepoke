@@ -6,6 +6,7 @@
       :editarId="editarId"
       @ocultar="ocultar"
       @enviar="enviar"
+      @verStats="verStats"
     />
     <ModalBorrarPokemon
       :mostrar="mostrar2"
@@ -21,36 +22,21 @@
       </button>
 
       <div class="row">
-        <div class="col-4 " v-for="(pokemon, index) in pokemones" :key="index">
-          <div class="card mb-3" >
-            <div class="row no-gutters">
-              <div class="col-md-4 imgPoke" style="width: 800px">
-                <div>
-                  
-                  <img v-if="!!pokemon" :src="pokemon.image" :alt="pokemon.nombre" />
-                  <img v-else src="../../../../assets/tarjVacia.png">
-                </div>
-              </div>
-              <div class="col-md-8" style="width: 800px">
-                <div class="card-body">
-                  <tr>
-                    <h5 class="card-title">
-                      {{ pokemon.nombre }} Nivel: {{ pokemon.nivel }}
-                    </h5>
-                    
-                  </tr>
-                  
-                  
-                </div>
-                <p class="btn btn-success mt-2"
-                @click="verStats()">Ver Stats</p>
-                <p
-                  class="btn btn-danger mt-2"
-                  @click="deletePokemon(pokemon.id)"
-                >
-                  <small class="text-muted">Borrar Pokemon</small>
-                </p>
-              </div>
+        <div class="col-md-4 mb-3" v-for="(pokemon, index) in pokemones" :key="index">
+          <div class="card text-center">
+            <img v-if="!!pokemon" :src="pokemon.image" :alt="pokemon.nombre" class="card-img-top img-pokemon" />
+            <img v-else src="../../../../assets/tarjVacia.png" class="card-img-top img-pokemon">
+
+            <div class="card-body">
+              <h5 class="card-title">{{ pokemon.nombre }} Nivel: {{ pokemon.nivel }}</h5>
+              
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-info mt-2" @click="pokemon.sonido.play()">Reproducir Sonido</button>
+              <button class="btn btn-success mt-2" @click="verStats()">Ver Stats</button>
+              <button class="btn btn-danger mt-2" @click="deletePokemon(pokemon.id)">
+                <small class="text-muted">Borrar Pokemon</small>
+              </button>
             </div>
           </div>
         </div>

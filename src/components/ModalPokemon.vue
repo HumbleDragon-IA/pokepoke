@@ -13,6 +13,7 @@
             <form class="m-3" @submit.prevent="submit">
               <div class="form-group">
                 <Pokedex ref="pokedex" @pokemon-selected="updatePokemonSeleccionado"></Pokedex>
+                <PokemonCard/>
               </div>
               <button :disabled="!pokemonValido"
                 :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']">
@@ -33,11 +34,12 @@
 import { Modal } from 'bootstrap';
 
 import Pokedex from './Pokedex.vue';
+import PokemonCard from './PokemonCard.vue';
 
 export default {
   name: 'ModalPokemon',
-  props: ['mostrar', 'editarId', 'pokemonId', ],
-  components: { Pokedex },
+  props: ['mostrar', 'editarId', 'pokemonId', 'pokemonDex' ],
+  components: { Pokedex , PokemonCard},
     mounted() {
       
       this.modal = new Modal(document.getElementById('exampleModal'), {
@@ -79,6 +81,9 @@ export default {
     },
     ocultar() {
       this.$emit('ocultar');
+    },
+    verStats(){
+      this.$emit('verStats')
     },
   },
   computed: {

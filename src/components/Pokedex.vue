@@ -1,5 +1,6 @@
 <template>
   <ModalPokemon :pokemonSeleccionadoId="this.pokemonSeleccionado"/>
+  
   <div class="pokedex">
 
     <img class="title" src="../assets/poke.png" alt="">
@@ -13,25 +14,9 @@
       </li>
     </ul>
     <div v-if="pokemonSeleccionado" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
-      <div class="card-header">
-        <h2>{{ pokemonSeleccionado.name }}</h2>
-        <p>#{{ pokemonSeleccionado.id }}</p>
-      </div>
+      
+      <PokemonCard :pokemonDex="this.pokemonSeleccionado"></PokemonCard>
      
-      <img class="pokemon-image" :src="pokemonImgSrc" :alt="pokemonSeleccionado.name" />
-
-      <div class="card-body">
-        <div class="stats">
-          <h3>Stats</h3>
-          <hr>
-          <ul>
-            <li><strong>Type:</strong> {{ selectedPokemonTypesIcons }}</li>
-            <li v-for="stat in pokemonSeleccionado.stats" :key="stat.stat.name">
-              <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
-            </li>
-          </ul>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -40,15 +25,16 @@
 <script>
 import pokemonService from '../services/pokemonService';
 import { typeEmojiMap, typeColorMap } from '@/utils/PokemonDicc';
-
+import PokemonCard from './PokemonCard.vue';
 export default {
+  components: {PokemonCard},
   data() {
     return {
       query: '',
       sugerencias: [],
       pokemonSeleccionado: null,
       pokemonImgSrc: null,
-      
+      pokemonAudSrc:null
     };
   },
   mounted(){
@@ -91,6 +77,7 @@ export default {
         this.query = name;
         this.emitPokemon();
         this.pokemonImgSrc = this.pokemonSeleccionado.sprites.other["official-artwork"].front_default
+        this.pokemonAudSrc = new Audio(this.pokemonSeleccionado.cries.legacy)
       } catch (error) {
         console.error('Error al traer detalles del pokemon:', error);
       }
@@ -104,6 +91,9 @@ export default {
     emitPokemon() {
       this.$emit('pokemon-selected', this.pokemonSeleccionado);
       
+    },
+    reproducir(){
+      this.pokemonAudSrc.play()
     },
   },
   computed: {
