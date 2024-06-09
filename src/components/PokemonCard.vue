@@ -1,16 +1,12 @@
 <template>
-  <ModalPokemon :pokemonDex="this.pokemonDex"/>
   <div class="pokedex">
-   
-    <div v-if="this.pokemonDex" >
+    <div v-if="pokemonDex">
       <div class="card-header">
         <h2>{{ pokemonDex.name }}</h2>
         <p>#{{ pokemonDex.id }}</p>
-        <button class="btn btn-info" @click="this.reproducir()">Reproducir Sonido</button>
+        <button class="btn btn-info" @click.stop="reproducir">Reproducir Sonido</button>
       </div>
-     
       <img class="pokemon-image" :src="pokemonDex.sprites.other['official-artwork'].front_default" :alt="pokemonDex.name" />
-
       <div class="card-body">
         <div class="stats">
           <h3>Stats</h3>
@@ -25,32 +21,21 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
-
 import { typeEmojiMap, typeColorMap } from '@/utils/PokemonDicc';
 
 export default {
-  props:['pokemonDex'],
-  data() {
-    return {
-      query: '',
-      sugerencias: [],
-      pokemonSeleccionado: null,
-      pokemonImgSrc: null,
-      pokemonAudSrc:null
-    };
-  },
-  mounted(){
-   console.log(this.pokemonDex)
-  },
+  props: ['pokemonDex'],
   methods: {
-   
-    reproducir(){
-      const audio = new Audio(this.pokemonDex.cries.latest)
-      audio.play()
+    reproducir(event) {
+      event.stopPropagation(); // Detiene la propagación del evento
+      event.preventDefault();  // Previene el comportamiento por defecto si es necesario
+      const audio = new Audio(this.pokemonDex.cries.latest);
+      audio.play().catch(error => {
+        console.error('Error al reproducir el audio: ', error);
+      });
     },
   },
   computed: {
@@ -61,18 +46,16 @@ export default {
           types.push(typeEmojiMap[element.type.name]);
         });
       }
-      return types.join(" ");
+      return types.join(' ');
     },
     selectedPokemonTypeColor() {
-
       if (this.pokemonDex) {
         let type = this.pokemonDex.types[0].type.name;
         return typeColorMap[type];
       }
       return '#f7f7f7';
     },
-    
-  }
+  },
 };
 </script>
 

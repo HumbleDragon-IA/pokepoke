@@ -24,16 +24,15 @@
       <div class="row">
         <div class="col-md-4 mb-3" v-for="(pokemon, index) in pokemones" :key="index">
           <div class="card text-center">
-            <img v-if="!!pokemon" :src="pokemon.image" :alt="pokemon.nombre" class="card-img-top img-pokemon" />
+            <img v-if="pokemon" :src="pokemon.image" :alt="pokemon.nombre" class="card-img-top img-pokemon" />
             <img v-else src="../../../../assets/tarjVacia.png" class="card-img-top img-pokemon">
 
             <div class="card-body">
               <h5 class="card-title">{{ pokemon.nombre }} Nivel: {{ pokemon.nivel }}</h5>
-              
             </div>
             <div class="card-footer">
-              <button class="btn btn-info mt-2" @click="pokemon.sonido.play()">Reproducir Sonido</button>
-              <button class="btn btn-success mt-2" @click="verStats()">Ver Stats</button>
+              <button class="btn btn-info mt-2" @click="reproducirSonido(pokemon.sonido)">Reproducir Sonido</button>
+              <button class="btn btn-success mt-2" @click="verStats(pokemon.id)">Ver Stats</button>
               <button class="btn btn-danger mt-2" @click="deletePokemon(pokemon.id)">
                 <small class="text-muted">Borrar Pokemon</small>
               </button>

@@ -18,7 +18,7 @@ export default {
       pokemonId: {},
       mostrar2: false,
       borrarId: null,
-      stats:false
+      stats: false,
     };
   },
   methods: {
@@ -61,14 +61,14 @@ export default {
         console.error('Invalid Pokémon data:', poke);
         return;
       }
-  
+
       const type = poke.types.map(typeInfo => typeInfo.type.name).join(', ');
       const ataque = poke.stats.find(stat => stat.stat.name === 'attack')?.base_stat || 0;
-      const defense =poke.stats.find(stat => stat.stat.name === 'defense')?.base_stat || 0;
-      const specialAttack =poke.stats.find(stat => stat.stat.name === 'special-attack')?.base_stat || 0;
-      const specialDefense =poke.stats.find(stat => stat.stat.name === 'special-defense')?.base_stat || 0;
-      const speed =poke.stats.find(stat => stat.stat.name === 'speed')?.base_stat || 0;
-      const hp =poke.stats.find(stat => stat.stat.name === 'hp')?.base_stat || 0;
+      const defense = poke.stats.find(stat => stat.stat.name === 'defense')?.base_stat || 0;
+      const specialAttack = poke.stats.find(stat => stat.stat.name === 'special-attack')?.base_stat || 0;
+      const specialDefense = poke.stats.find(stat => stat.stat.name === 'special-defense')?.base_stat || 0;
+      const speed = poke.stats.find(stat => stat.stat.name === 'speed')?.base_stat || 0;
+      const hp = poke.stats.find(stat => stat.stat.name === 'hp')?.base_stat || 0;
       const nuevoPoke = {
         nombre: poke.name,
         nivel: 1,
@@ -80,10 +80,10 @@ export default {
         speed: speed,
         numero: poke.id,
         hp: hp,
-        image: poke.sprites.other["showdown"].front_default,
-        sonido: poke.cries.latest
+        image: poke.sprites.other['official-artwork'].front_default,
+        sonido: poke.cries.latest,
       };
-  
+
       try {
         const pokeGuardado = await pokebolaService.post(nuevoPoke);
         this.pokemones.push(pokeGuardado);
@@ -95,10 +95,15 @@ export default {
       console.log(id);
       const pokeEliminado = await pokebolaService.del(id);
       console.log(pokeEliminado, 'delete');
-  
+
       const index = this.pokemones.findIndex(pokemon => pokemon.id === pokeEliminado.id);
       this.pokemones.splice(index, 1);
     },
-    
-  },
-};
+    reproducirSonido(url) {
+      const audio = new Audio(url);
+      audio.play().catch(error => {
+        console.error('Error al reproducir el audio: ', error);
+      });
+    },
+  }
+}

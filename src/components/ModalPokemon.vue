@@ -12,10 +12,9 @@
           <div class="modal-body">
             <form class="m-3" @submit.prevent="submit">
               <div class="form-group">
-                <Pokedex ref="pokedex" @pokemon-selected="updatePokemonSeleccionado"></Pokedex>
-                <PokemonCard/>
+                <Pokedex ref="pokedex" @pokemon-selected="updatePokemonSeleccionado" />
               </div>
-              <button :disabled="!pokemonValido"
+              <button :disabled="!pokemonSeleccionado"
                 :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']">
                 {{ editarId ? 'Actualizar' : 'Agregar' }}
               </button>
@@ -32,49 +31,36 @@
 
 <script>
 import { Modal } from 'bootstrap';
-
 import Pokedex from './Pokedex.vue';
-import PokemonCard from './PokemonCard.vue';
 
 export default {
   name: 'ModalPokemon',
-  props: ['mostrar', 'editarId', 'pokemonId', 'pokemonDex' ],
-  components: { Pokedex , PokemonCard},
-    mounted() {
-      
-    console.log(this.pokemonSeleccionado)
+  props: ['mostrar', 'editarId', 'pokemonId'],
+  components: { Pokedex },
+  mounted() {
     this.modal = new Modal(document.getElementById('exampleModal'), {
       keyboard: false,
       backdrop: 'static',
-
     });
   },
-
- 
   data() {
     return {
       modal: null,
-      query: '',
-      suggestions: [],
       pokemonSeleccionado: null,
-      muestra: true,
     };
   },
   methods: {
-
     updatePokemonSeleccionado(pokemon) {
-      console.log(pokemon)
       this.pokemonSeleccionado = pokemon;
     },
     show() {
       this.modal.show();
-      this.$refs.pokedex.clearSearch()
+      this.$refs.pokedex.clearSearch();
     },
     hide() {
       this.modal.hide();
     },
     submit() {
-      console.log(this.pokemonSeleccionadoId)
       if (this.pokemonSeleccionado) {
         this.$emit('enviar', this.pokemonSeleccionado);
       } else {
@@ -84,15 +70,7 @@ export default {
     },
     ocultar() {
       this.$emit('ocultar');
-    },
-    verStats(){
-      this.$emit('verStats')
-    },
-  },
-  computed: {
-    pokemonValido() {
-      return this.pokeElegido !== null;
-    },
+    }
   },
   watch: {
     mostrar(newMostrar) {
