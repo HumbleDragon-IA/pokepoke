@@ -6,11 +6,11 @@
       <div class="card-header">
         <h2>{{ pokemonDex.name }}</h2>
         <p>#{{ pokemonDex.id }}</p>
-        <button class="btn btn-info" @click="this.reproducir()">Reproducir Sonido</button>
       </div>
      
       <img class="pokemon-image" :src="pokemonDex.sprites.other['official-artwork'].front_default" :alt="pokemonDex.name" />
 
+      <p class="btn" @click="this.reproducir()" style="text-align: left">🔊</p>
       <div class="card-body">
         <div class="stats">
           <h3>Stats</h3>
