@@ -12,34 +12,12 @@
           <div class="modal-body">
             <form class="m-3" @submit.prevent="submit">
               <div class="form-group">
-                <label for="nombre">Nombre o ID</label>
-                <div>
-                  <input type="text" v-model="query" placeholder="Type Pokémon name or ID" @input="searchPokemon" />
-                  <ul v-if="suggestions.length" class="suggestion-list">
-                    <li v-for="suggestion in suggestions" :key="suggestion.name" @click="selectPokemon(suggestion.name)">
-                      {{ suggestion.name }}
-                    </li>
-                  </ul>
-                  <div v-if="selectedPokemon && muestra" class="pokemon-card">
-                    <h2>{{ selectedPokemon.name }}</h2>
-                    <img :src="selectedPokemon.sprites.front_default" :alt="selectedPokemon.name" />
-                    <p><strong>Height:</strong> {{ selectedPokemon.height }} dm</p>
-                    <p><strong>Weight:</strong> {{ selectedPokemon.weight }} hg</p>
-                    <div class="stats">
-                      <h3>Stats</h3>
-                      <ul>
-                        <li v-for="stat in selectedPokemon.stats" :key="stat.stat.name">
-                          <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
-                        </li>
-                      </ul>
-                     
-                    </div>
-                  </div>
-                </div>
+                <Pokedex ref="pokedex" @pokemon-selected="updatePokemonSeleccionado"></Pokedex>
+                <PokemonCard/>
               </div>
-              <button :disabled="!pokemonValido" :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']">
+              <button :disabled="!pokemonValido"
+                :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']">
                 {{ editarId ? 'Actualizar' : 'Agregar' }}
-                
               </button>
               <button type="button" @click="ocultar" class="btn btn-secondary mt-5 mb-3 float-left">
                 Cancelar
@@ -54,101 +32,66 @@
 
 <script>
 import { Modal } from 'bootstrap';
-import pokemonService from '@/services/pokemonService';
+
+import Pokedex from './Pokedex.vue';
+import PokemonCard from './PokemonCard.vue';
 
 export default {
   name: 'ModalPokemon',
-  props: ['mostrar', 'editarId', 'pokemonId'],
-
-  beforeCreate(){
-  this.selectedPokemon=null
-
-  },
-  mounted() {
-    
+  props: ['mostrar', 'editarId', 'pokemonId', 'pokemonDex' ],
+  components: { Pokedex , PokemonCard},
+    mounted() {
+      
+    console.log(this.pokemonSeleccionado)
     this.modal = new Modal(document.getElementById('exampleModal'), {
       keyboard: false,
       backdrop: 'static',
+
     });
   },
 
-beforeUpdate(){
-  console.log('beforeuptdate')
-},
-  updated(){
-    
-    console.log('updated')
-  },
-  afterUpdate(){
-  this.selectedPokemon=null
-
-  },
-  beforeUnmount(){
-    console.log('beforeUnmount')
-  },
-  unmounted(){
-    console.log('unmonunt')
-  
-  },
+ 
   data() {
     return {
       modal: null,
       query: '',
       suggestions: [],
-      selectedPokemon: null,
+      pokemonSeleccionado: null,
       muestra: true,
     };
   },
   methods: {
-    async selectPokemon(name) {
-      try {
-        this.selectedPokemon = await pokemonService.getPokemonDetails(name);
-        this.suggestions = [];
-        this.query = name;
-      } catch (error) {
-        console.error('Error fetching Pokémon details:', error);
-      }
-    },
-    async searchPokemon() {
-      if (this.query.length > 0) {
-        if (!isNaN(this.query)) {
-          try {
-            const pokemon = await pokemonService.getPokemonDetails(this.query);
-            this.suggestions = [{ name: pokemon.name }];
-          } catch (error) {
-            console.error('Error fetching Pokémon by ID:', error);
-            this.suggestions = [];
-          }
-        } else {
-          try {
-            const allPokemon = await pokemonService.getAllPokemon();
-            this.suggestions = allPokemon.filter(pokemon => pokemon.name.includes(this.query.toLowerCase()));
-          } catch (error) {
-            console.error('Error fetching Pokémon list:', error);
-          }
-        }
-      } else {
-        this.suggestions = [];
-      }
+
+    updatePokemonSeleccionado(pokemon) {
+      console.log(pokemon)
+      this.pokemonSeleccionado = pokemon;
     },
     show() {
       this.modal.show();
+      this.$refs.pokedex.clearSearch()
     },
     hide() {
       this.modal.hide();
     },
     submit() {
-      this.$emit('enviar', { ...this.selectedPokemon });
-      this.query='',
-      this.selectedPokemon=null
+      console.log(this.pokemonSeleccionadoId)
+      if (this.pokemonSeleccionado) {
+        this.$emit('enviar', this.pokemonSeleccionado);
+      } else {
+        console.error('No Pokémon selected');
+      }
+      this.pokemonSeleccionado = null;
     },
     ocultar() {
       this.$emit('ocultar');
     },
+    verStats(){
+      this.$emit('verStats')
+    },
   },
   computed: {
     pokemonValido() {
-      return this.selectedPokemon !== null;
+      return this.pokeElegido !== null;
     },
   },
   watch: {
@@ -168,19 +111,23 @@ beforeUpdate(){
   list-style-type: none;
   padding: 0;
 }
+
 .suggestion-list li {
   cursor: pointer;
   padding: 5px;
   border: 1px solid #ddd;
 }
+
 .suggestion-list li:hover {
   background-color: #eee;
 }
+
 .pokemon-card {
   border: 1px solid #ddd;
   padding: 10px;
   margin-top: 10px;
 }
+
 .stats ul {
   list-style-type: none;
   padding: 0;

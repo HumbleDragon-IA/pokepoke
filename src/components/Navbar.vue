@@ -14,9 +14,6 @@
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-
-
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
 
@@ -67,7 +64,6 @@ export default {
 </script>
 
 <style scoped lang="css">
-
 .src-components-navbar {
   margin-top: 5vh;
 }
@@ -75,5 +71,4 @@ export default {
 nav {
   height: 70px;
 }
-
 </style>

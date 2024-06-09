@@ -12,6 +12,7 @@
     "bootstrap": "^4.6.2",
     "bootstrap4": "^0.0.1-security",
     "core-js": "^3.8.3",
+    "express": "^4.19.2",
     "jquery": "^3.7.1",
     "popper.js": "^1.16.1",
     "vue": "^3.4.27",

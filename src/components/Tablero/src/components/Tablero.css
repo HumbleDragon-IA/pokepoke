@@ -1,23 +1,23 @@
 .src-components-tablero {
 
 }
-.src-components-principal {
-    height: 100vh;
-    /* Hace que el contenedor ocupe toda la altura de la ventana */
-    margin: 0;
-    padding: 0;
-    background-image: url('@/assets/pokebola.jpg');
-    /* URL de tu imagen de fondo */
-    background-size: cover;
-    /* Ajusta el tamaño de la imagen para cubrir toda la página */
-    background-repeat: no-repeat;
-    /* Evita que la imagen se repita */
-    background-attachment: fixed;
-    /* Hace que la imagen de fondo se mantenga fija al hacer scroll */
-    background-position: center;
-    /* Centra la imagen de fondo */
-  }
-  
+.img-pokemon {
+  max-width: 150px; /* Ajusta el tamaño según tus necesidades */
+  margin: auto;
+  padding-top: 10px;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-title {
+  margin-bottom: 15px;
+}
+
+  /* 
   .card-img-top {
     width: 150px;
   }
@@ -85,7 +85,7 @@
     text-align: left;
     background-color: #f9f9f9;
     color: black;
-    /* Color del texto para buena visibilidad */
+   
   }
   
   .pokemon-card h2 {
@@ -97,7 +97,7 @@
   
   .pokemon-card img {
     max-width: 150px;
-    /* Ajustar el tamaño para que encaje bien en la tarjeta */
+    
     display: block;
     margin: 0 auto 20px;
   }
@@ -116,13 +116,13 @@
   }
  
   .background {
-    height: 100vh; /* Hace que el contenedor ocupe toda la altura de la ventana */
+    height: 100vh; 
     margin: 0;
     padding: 0;
-    background-image: url('@/assets/tarjVacia.png'); /* URL de tu imagen de fondo */
-    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir toda la página */
-    background-repeat: no-repeat; /* Evita que la imagen se repita */
-    background-attachment: fixed; /* Hace que la imagen de fondo se mantenga fija al hacer scroll */
-    background-position: center; /* Centra la imagen de fondo */
+    background-image: url('@/assets/tarjVacia.png'); 
+    background-size: cover; 
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+    background-position: center; 
   }
- 
+  */

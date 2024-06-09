@@ -1,33 +1,39 @@
 <template>
-  <ModalPokemon :pokemonSeleccionadoId="this.pokemonSeleccionado"/>
-  
+  <ModalPokemon :pokemonDex="this.pokemonDex"/>
   <div class="pokedex">
-
-    <img class="title" src="../assets/poke.png" alt="">
-
-    <input type="text" v-model="query" placeholder="Escribi el nombre del Pokemon o su ID" @input="searchPokemon" />
-
-    <ul v-if="sugerencias.length" class="suggestion-list">
-      <li v-for="suggestion in sugerencias" :key="suggestion.name" @click="selectPokemon(suggestion.name)">
-        <span><img alt="" srcset="" :src="suggestion.sprite"></span>
-        <span>{{ suggestion.name }}</span>
-      </li>
-    </ul>
-    <div v-if="pokemonSeleccionado" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
-      
-      <PokemonCard :pokemonDex="this.pokemonSeleccionado"></PokemonCard>
+   
+    <div v-if="this.pokemonDex" >
+      <div class="card-header">
+        <h2>{{ pokemonDex.name }}</h2>
+        <p>#{{ pokemonDex.id }}</p>
+        <button class="btn btn-info" @click="this.reproducir()">Reproducir Sonido</button>
+      </div>
      
+      <img class="pokemon-image" :src="pokemonDex.sprites.other['official-artwork'].front_default" :alt="pokemonDex.name" />
+
+      <div class="card-body">
+        <div class="stats">
+          <h3>Stats</h3>
+          <hr>
+          <ul>
+            <li><strong>Type:</strong> {{ selectedPokemonTypesIcons }}</li>
+            <li v-for="stat in pokemonDex.stats" :key="stat.stat.name">
+              <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 
 </template>
 
 <script>
-import pokemonService from '../services/pokemonService';
+
 import { typeEmojiMap, typeColorMap } from '@/utils/PokemonDicc';
-import PokemonCard from './PokemonCard.vue';
+
 export default {
-  components: {PokemonCard},
+  props:['pokemonDex'],
   data() {
     return {
       query: '',
@@ -38,69 +44,20 @@ export default {
     };
   },
   mounted(){
-    this.clearSearch()
+   console.log(this.pokemonDex)
   },
   methods: {
-    async searchPokemon() {
-      if (this.query.length > 0) {
-        if (!isNaN(this.query)) {
-          try {
-            const pokemon = await pokemonService.getPokemonDetails(this.query);
-            this.sugerencias = [
-              {
-                name: pokemon.name,
-                sprite: pokemon.sprites.front_default,
-              }
-            ];
-          } catch (error) {
-            console.error('Error al traer Pokémon by ID:', error);
-            this.sugerencias = [];
-          }
-        } else {
-          try {
-            const allPokemon = await pokemonService.getAllPokemon();
-            this.sugerencias = allPokemon.filter(pokemon =>
-            pokemon.name.includes(this.query.toLowerCase())
-            );
-          } catch (error) {
-            console.error('Error al traer la lista de pokemones:', error);
-          }
-        }
-      } else {
-        this.sugerencias = [];
-      }
-    },
-    async selectPokemon(name) {
-      try {
-        this.pokemonSeleccionado = await pokemonService.getPokemonDetails(name);
-        this.sugerencias = [];
-        this.query = name;
-        this.emitPokemon();
-        this.pokemonImgSrc = this.pokemonSeleccionado.sprites.other["official-artwork"].front_default
-        this.pokemonAudSrc = new Audio(this.pokemonSeleccionado.cries.legacy)
-      } catch (error) {
-        console.error('Error al traer detalles del pokemon:', error);
-      }
-    },
-    clearSearch(){
-      this.query='',
-      this.suggestions = [];
-      this.pokemonSeleccionado = null;
-      this.pokemonSeleccionadoColor = '';
-    },
-    emitPokemon() {
-      this.$emit('pokemon-selected', this.pokemonSeleccionado);
-      
-    },
+   
     reproducir(){
-      this.pokemonAudSrc.play()
+      const audio = new Audio(this.pokemonDex.cries.latest)
+      audio.play()
     },
   },
   computed: {
     selectedPokemonTypesIcons() {
       let types = [];
-      if (this.pokemonSeleccionado) {
-        this.pokemonSeleccionado.types.forEach(element => {
+      if (this.pokemonDex) {
+        this.pokemonDex.types.forEach(element => {
           types.push(typeEmojiMap[element.type.name]);
         });
       }
@@ -108,8 +65,8 @@ export default {
     },
     selectedPokemonTypeColor() {
 
-      if (this.pokemonSeleccionado) {
-        let type = this.pokemonSeleccionado.types[0].type.name;
+      if (this.pokemonDex) {
+        let type = this.pokemonDex.types[0].type.name;
         return typeColorMap[type];
       }
       return '#f7f7f7';
