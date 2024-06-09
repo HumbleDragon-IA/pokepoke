@@ -25,7 +25,6 @@
             <RouterLink class="nav-link" to="/tablero">Tablero</RouterLink>
           </li>
 
-
         </ul>
         <img class="banner-img d-none d-lg-block" src="../assets/Magikarp.webp" alt="">
       </div>

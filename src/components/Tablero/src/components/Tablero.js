@@ -80,7 +80,8 @@ export default {
         speed: speed,
         numero: poke.id,
         hp: hp,
-        image: poke.sprites.front_default,
+        image: poke.sprites.other["showdown"].front_default,
+        sonido: poke.cries.latest
       };
   
       try {
@@ -98,8 +99,6 @@ export default {
       const index = this.pokemones.findIndex(pokemon => pokemon.id === pokeEliminado.id);
       this.pokemones.splice(index, 1);
     },
-    verStats(){
-      this.stats=!this.stats
-    },
+    
   },
 };
