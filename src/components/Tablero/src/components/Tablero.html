@@ -1,9 +1,11 @@
 <template>
-  <section>
+  
     <ModalPokemon
       :mostrar="mostrar"
       :pokemonId="pokemonId"
       :editarId="editarId"
+      :consultaStats="consultaStats"
+      :pokemonDex="pokemonDex"
       @ocultar="ocultar"
       @enviar="enviar"
       @verStats="verStats"
@@ -14,6 +16,8 @@
       @ocultar="ocultar2"
       @borrar="borrar"
     />
+    
+
 
     <div class="jumbotron">
       <h5>Tablero Jugador</h5>
@@ -31,8 +35,8 @@
               <h5 class="card-title">{{ pokemon.nombre }} Nivel: {{ pokemon.nivel }}</h5>
             </div>
             <div class="card-footer">
-              <button class="btn btn-info mt-2" @click="reproducirSonido(pokemon.sonido)">Reproducir Sonido</button>
-              <button class="btn btn-success mt-2" @click="verStats(pokemon.id)">Ver Stats</button>
+              
+              <button class="btn btn-success mt-2" @click="verStats(pokemon.nombre)">Ver Stats</button>
               <button class="btn btn-danger mt-2" @click="deletePokemon(pokemon.id)">
                 <small class="text-muted">Borrar Pokemon</small>
               </button>

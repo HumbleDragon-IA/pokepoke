@@ -4,17 +4,22 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title" id="exampleModalLabel">{{ editarId ? 'Edición' : 'Ingreso' }} de Pokemon</h2>
+            <h2 class="modal-title" id="exampleModalLabel">{{ consultaStats? 'Stats' : 'Ingreso' }} de Pokemon</h2>
             <button @click="ocultar" type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
+            <div v-if="this.consultaStats" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }"> 
+               <PokemonCard :pokemonDex="pokemonDex" > </PokemonCard> 
+            </div>
             <form class="m-3" @submit.prevent="submit">
               <div class="form-group">
-                <Pokedex ref="pokedex" @pokemon-selected="updatePokemonSeleccionado" />
+                <span v-if="!this.consultaStats"> <Pokedex ref="pokedex" @pokemon-selected="updatePokemonSeleccionado" /> </span>
+                
+                
               </div>
-              <button :disabled="!pokemonSeleccionado"
+              <button v-if="!consultaStats" :disabled="!pokemonSeleccionado"
                 :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']">
                 {{ editarId ? 'Actualizar' : 'Agregar' }}
               </button>
@@ -32,11 +37,12 @@
 <script>
 import { Modal } from 'bootstrap';
 import Pokedex from './Pokedex.vue';
+import PokemonCard from './PokemonCard.vue';
 
 export default {
   name: 'ModalPokemon',
-  props: ['mostrar', 'editarId', 'pokemonId'],
-  components: { Pokedex },
+  props: ['mostrar', 'editarId', 'pokemonId', 'consultaStats', 'pokemonDex'],
+  components: { Pokedex, PokemonCard },
   mounted() {
     this.modal = new Modal(document.getElementById('exampleModal'), {
       keyboard: false,
@@ -70,6 +76,9 @@ export default {
     },
     ocultar() {
       this.$emit('ocultar');
+    },
+    verStats(){
+      this.$emit('verStats');
     }
   },
   watch: {
@@ -101,11 +110,39 @@ export default {
 }
 
 .pokemon-card {
-  border: 1px solid #ddd;
-  padding: 10px;
-  margin-top: 10px;
+  height: auto;
+  margin-top: 20px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #f7f7f7;
+  text-align: left;
+  font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
+  position: relative;
+  overflow: hidden;
+  border: solid white 10px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+.pokemon-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url('../assets/card-texture.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 1.5;
+  z-index: 1;
+  mix-blend-mode: multiply;
 }
 
+.pokemon-card>* {
+  position: relative;
+  z-index: 2;
+}
 .stats ul {
   list-style-type: none;
   padding: 0;

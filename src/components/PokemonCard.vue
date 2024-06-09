@@ -1,5 +1,5 @@
 <template>
-  <div class="pokedex">
+  <div class="PokemonCard">
     <div v-if="pokemonDex">
       <div class="card-header">
         <h2>{{ pokemonDex.name }}</h2>

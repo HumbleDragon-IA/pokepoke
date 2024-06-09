@@ -1,11 +1,13 @@
 import * as pokebolaService from '../../../../services/pokebolaService';
 import ModalPokemon from '../../../ModalPokemon.vue';
 import ModalBorrarPokemon from '../../../ModalBorrarPokemon.vue';
+import pokemonService from '@/services/pokemonService';
 
 export default {
   components: {
     ModalPokemon,
     ModalBorrarPokemon,
+    
   },
   mounted() {
     this.getPoke();
@@ -18,24 +20,38 @@ export default {
       pokemonId: {},
       mostrar2: false,
       borrarId: null,
-      stats: false,
+      consultaStats: false,
+      pokemonDex: {}
     };
   },
   methods: {
+    async verStats(pokemonNombre) {
+      try {
+        const pokemon = await pokemonService.getPokemonDetails(pokemonNombre);
+        this.pokemonDex = pokemon;
+        this.consultaStats = true;
+        this.mostrar = true;
+      } catch (error) {
+        console.error('Error fetching Pokémon details:', error);
+      }
+    },
     agregar() {
       this.editarId = null;
       this.pokemonId = {};
       this.mostrar = true;
+      this.consultaStats = false
     },
     editar(id) {
       this.editarId = id;
       this.pokemonId = { ...this.pokemones.find(p => p.id === id) };
       this.mostrar = true;
+      this.consultaStats = false
     },
     ocultar() {
       this.mostrar = false;
       this.editarId = null;
       this.pokemonId = {};
+      this.consultaStats = false
     },
     async enviar(poke) {
       console.log(poke);
@@ -44,6 +60,7 @@ export default {
         await this.putPokemon(this.editarId, poke);
         this.pokemonId = {};
         this.editarId = null;
+        this.consultaStats = false
       } else {
         await this.postPoke(poke);
       }
