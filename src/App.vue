@@ -1,10 +1,8 @@
-
 <template>
 
   <div id="principal" class="container mt-3">
     <div class="container">
       <br>
-      <Register/>
       <Navbar/>
       <RouterView />    
     </div>
@@ -19,13 +17,12 @@
 
 <script>
 import Navbar from './components/Navbar.vue'
-import Register from './components/Register.vue'
 
 export default {
   name: 'App',
   components: {
   Navbar,
-  Register
+
   }
 }
 </script>
@@ -51,7 +48,5 @@ body {
 footer {
   margin-top: 25px;
 }
-
-
 
 </style>
