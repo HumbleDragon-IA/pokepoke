@@ -42,8 +42,7 @@ export default {
   components: { Pokedex , PokemonCard},
     mounted() {
       
-    console.log(this.pokemonSeleccionado)
-    this.modal = new Modal(document.getElementById('exampleModal'), {
+      this.modal = new Modal(document.getElementById('exampleModal'), {
       keyboard: false,
       backdrop: 'static',
 
@@ -63,7 +62,6 @@ export default {
   methods: {
 
     updatePokemonSeleccionado(pokemon) {
-      console.log(pokemon)
       this.pokemonSeleccionado = pokemon;
     },
     show() {
@@ -74,7 +72,6 @@ export default {
       this.modal.hide();
     },
     submit() {
-      console.log(this.pokemonSeleccionadoId)
       if (this.pokemonSeleccionado) {
         this.$emit('enviar', this.pokemonSeleccionado);
       } else {
@@ -91,7 +88,7 @@ export default {
   },
   computed: {
     pokemonValido() {
-      return this.pokeElegido !== null;
+      return this.pokemonSeleccionado !== null;
     },
   },
   watch: {
