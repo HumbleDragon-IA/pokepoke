@@ -1,12 +1,12 @@
 <template>
   <div>
-    <button v-if="!estaLogueado" type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModalCenter" id="login"
+    <button v-if="!estaLogueado" type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#loginModalCenter" id="login"
     >Login</button>
-    <button v-if="estaLogueado" type="button" class="btn btn-danger" @click="logout">Logout</button>
+    <button v-if="estaLogueado" type="button" class="btn btn-outline-danger" @click="logout">Logout</button>
     
     <div class="modal fade" id="loginModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content bg-dark">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLongTitle">Login</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -115,4 +115,7 @@ export default {
 </script>
 
 <style scoped>
+.modal{
+  color: white;
+}
 </style>

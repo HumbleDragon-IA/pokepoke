@@ -1,9 +1,9 @@
 <template>
-  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" id="registro">Registrarse</button>
+  <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModalCenter" id="registro">Registrarse</button>
   <div
     class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
+      <div class="modal-content bg-dark">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Registrar</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -132,5 +132,7 @@ export default {
 </script>
 
 <style scoped>
-
+.modal{
+  color: white;
+}
 </style>
