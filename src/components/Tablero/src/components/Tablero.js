@@ -97,7 +97,7 @@ export default {
         speed: speed,
         numero: poke.id,
         hp: hp,
-        image: poke.sprites.other['official-artwork'].front_default,
+        image: poke.sprites.other['showdown'].front_default,
         sonido: poke.cries.latest,
       };
 
