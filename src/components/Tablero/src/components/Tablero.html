@@ -6,7 +6,7 @@
 
   <div class="jumbotron">
     <h5 id="title">Tablero Jugador</h5>
-    <button class="add-btn" @click="agregar">
+    <button :disabled="this.pokemones.length>=6" class="add-btn" @click="agregar">
       Agregar Pokemon
     </button>
 

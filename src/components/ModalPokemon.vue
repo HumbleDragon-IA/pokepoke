@@ -94,6 +94,20 @@ export default {
 </script>
 
 <style scoped lang="css">
+.modal-header{
+  background-image: url('../assets/fondorojo.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+.modal-body{
+  background-image: url('../assets/pokeball-pc-hd.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .suggestion-list {
   list-style-type: none;
   padding: 0;
