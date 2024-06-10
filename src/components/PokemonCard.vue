@@ -1,12 +1,15 @@
 <template>
+  
   <div class="PokemonCard">
     <div v-if="pokemonDex">
       <div class="card-header">
         <h2>{{ pokemonDex.name }}</h2>
         <p>#{{ pokemonDex.id }}</p>
-        <button class="btn btn-info" @click.stop="reproducir">Reproducir Sonido</button>
       </div>
       <img class="pokemon-image" :src="pokemonDex.sprites.other['official-artwork'].front_default" :alt="pokemonDex.name" />
+      <div class="sound-btn">
+        <div class="btn" @click.stop="reproducir">🔊</div>
+      </div>
       <div class="card-body">
         <div class="stats">
           <h3>Stats</h3>
@@ -18,9 +21,10 @@
             </li>
           </ul>
         </div>
-      </div>
+     </div>
     </div>
   </div>
+
 </template>
 
 <script>
@@ -30,8 +34,8 @@ export default {
   props: ['pokemonDex'],
   methods: {
     reproducir(event) {
-      event.stopPropagation(); // Detiene la propagación del evento
-      event.preventDefault();  // Previene el comportamiento por defecto si es necesario
+      event.stopPropagation();
+      event.preventDefault(); 
       const audio = new Audio(this.pokemonDex.cries.latest);
       audio.play().catch(error => {
         console.error('Error al reproducir el audio: ', error);
@@ -70,7 +74,6 @@ export default {
 .title {
   margin-top: 1rem;
   width: 100%;
-
 }
 
 input {
@@ -88,7 +91,6 @@ input {
   list-style: none;
   padding: 5px;
   margin: 0;
-  border: 1px solid #ccc;
   position: relative;
   width: 100%;
   max-height: 150px;
@@ -126,7 +128,7 @@ input {
   border-radius: 10px;
   padding: 20px;
   background-color: #f7f7f7;
-  text-align: left;
+  text-align: center;
   font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
   position: relative;
   overflow: hidden;
@@ -190,7 +192,6 @@ input {
 .stats {
   margin-top: -10px;
   margin-bottom: -30px;
-  border: solid black 3px;
   padding: 25px;
   background-color: rgba(255, 255, 255, 0.5);
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
@@ -216,5 +217,10 @@ input {
 
 .stats ul li strong {
   text-transform: capitalize;
+}
+
+.sound-btn {
+  display: flex;
+  justify-content: center;
 }
 </style>
