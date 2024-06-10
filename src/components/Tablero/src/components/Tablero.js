@@ -2,6 +2,8 @@ import * as pokebolaService from '../../../../services/pokebolaService';
 import ModalPokemon from '../../../ModalPokemon.vue';
 import ModalBorrarPokemon from '../../../ModalBorrarPokemon.vue';
 import pokemonService from '@/services/pokemonService';
+import { altTypeColorMap } from '@/utils/PokemonDicc';
+
 
 export default {
   components: {
@@ -116,11 +118,9 @@ export default {
       const index = this.pokemones.findIndex(pokemon => pokemon.id === pokeEliminado.id);
       this.pokemones.splice(index, 1);
     },
-    reproducirSonido(url) {
-      const audio = new Audio(url);
-      audio.play().catch(error => {
-        console.error('Error al reproducir el audio: ', error);
-      });
-    },
+    colorPorTipo(pokemon){
+      let tipo = pokemon.type.split(',')[0];
+      return altTypeColorMap[tipo];
+    }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  
+
   <div class="PokemonCard">
     <div v-if="pokemonDex">
       <div class="card-header">
