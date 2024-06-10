@@ -81,24 +81,24 @@ export default {
         return;
       }
 
-      const type = poke.types.map(typeInfo => typeInfo.type.name).join(', ');
-      const ataque = poke.stats.find(stat => stat.stat.name === 'attack')?.base_stat || 0;
+      
+     /*  const ataque = 
       const defense = poke.stats.find(stat => stat.stat.name === 'defense')?.base_stat || 0;
       const specialAttack = poke.stats.find(stat => stat.stat.name === 'special-attack')?.base_stat || 0;
       const specialDefense = poke.stats.find(stat => stat.stat.name === 'special-defense')?.base_stat || 0;
       const speed = poke.stats.find(stat => stat.stat.name === 'speed')?.base_stat || 0;
-      const hp = poke.stats.find(stat => stat.stat.name === 'hp')?.base_stat || 0;
+      const hp = poke.stats.find(stat => stat.stat.name === 'hp')?.base_stat || 0; */
       const nuevoPoke = {
         nombre: poke.name,
         nivel: 1,
-        type: type,
-        ataque: ataque,
-        defense: defense,
-        specialAttack: specialAttack,
-        specialDefense: specialDefense,
-        speed: speed,
+        type: poke.types.map(typeInfo => typeInfo.type.name).join(', '),
+        ataque: poke.stats.find(stat => stat.stat.name === 'attack')?.base_stat || 0,
+        defense: poke.stats.find(stat => stat.stat.name === 'defense')?.base_stat || 0,
+        specialAttack: poke.stats.find(stat => stat.stat.name === 'special-attack')?.base_stat || 0,
+        specialDefense: poke.stats.find(stat => stat.stat.name === 'special-defense')?.base_stat || 0,
+        speed: poke.stats.find(stat => stat.stat.name === 'speed')?.base_stat || 0,
         numero: poke.id,
-        hp: hp,
+        hp: poke.stats.find(stat => stat.stat.name === 'hp')?.base_stat || 0,
         image: poke.sprites.other['showdown'].front_default,
         sonido: poke.cries.latest,
       };
