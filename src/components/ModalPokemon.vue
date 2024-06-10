@@ -4,20 +4,22 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h2 class="modal-title" id="exampleModalLabel">{{ consultaStats? 'Stats' : 'Ingreso' }} de Pokemon</h2>
+            <h2 class="modal-title" id="exampleModalLabel">{{ consultaStats ? 'Stats' : 'Ingreso' }} de Pokemon</h2>
             <button @click="ocultar" type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <div v-if="this.consultaStats" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }"> 
-               <PokemonCard :pokemonDex="pokemonDex" > </PokemonCard> 
+            <div v-if="this.consultaStats" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
+              <PokemonCard :pokemonDex="pokemonDex"> </PokemonCard>
             </div>
             <form class="m-3" @submit.prevent="submit">
               <div class="form-group">
-                <span v-if="!this.consultaStats"> <Pokedex ref="pokedex" @pokemon-selected="updatePokemonSeleccionado" /> </span>
-                
-                
+                <span v-if="!this.consultaStats">
+                  <Pokedex ref="pokedex" @pokemon-selected="updatePokemonSeleccionado" />
+                </span>
+
+
               </div>
               <button v-if="!consultaStats" :disabled="!pokemonSeleccionado"
                 :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']">
@@ -38,6 +40,7 @@
 import { Modal } from 'bootstrap';
 import Pokedex from './Pokedex.vue';
 import PokemonCard from './PokemonCard.vue';
+import { typeColorMap } from '@/utils/PokemonDicc';
 
 export default {
   name: 'ModalPokemon',
@@ -77,9 +80,18 @@ export default {
     ocultar() {
       this.$emit('ocultar');
     },
-    verStats(){
+    verStats() {
       this.$emit('verStats');
     }
+  },
+  computed: {
+    selectedPokemonTypeColor() {
+      if (this.pokemonDex) {
+        let type = this.pokemonDex.types[0].type.name;
+        return typeColorMap[type];
+      }
+      return '#f7f7f7';
+    },
   },
   watch: {
     mostrar(newMostrar) {
@@ -94,14 +106,15 @@ export default {
 </script>
 
 <style scoped lang="css">
-.modal-header{
+.modal-header {
   background-image: url('../assets/fondorojo.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
-.modal-body{
+
+.modal-body {
   background-image: url('../assets/pokeball-pc-hd.webp');
   background-size: cover;
   background-repeat: no-repeat;
@@ -137,6 +150,7 @@ export default {
   border: solid white 10px;
   box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
 }
+
 .pokemon-card::before {
   content: '';
   position: absolute;
@@ -157,6 +171,7 @@ export default {
   position: relative;
   z-index: 2;
 }
+
 .stats ul {
   list-style-type: none;
   padding: 0;
