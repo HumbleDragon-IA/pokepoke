@@ -50,6 +50,11 @@
   mix-blend-mode: multiply;
 }
 
+.pokeCard>* {
+  position: relative;
+  z-index: 2;
+}
+
 .pokeCard-body {
   display: flex;
   flex-wrap: nowrap;
