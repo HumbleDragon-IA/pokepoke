@@ -98,7 +98,7 @@ export default {
         specialDefense: poke.stats.find(stat => stat.stat.name === 'special-defense')?.base_stat || 0,
         speed: poke.stats.find(stat => stat.stat.name === 'speed')?.base_stat || 0,
         numero: poke.id,
-        hp: poke.stats.find(stat => stat.stat.name === 'hp')?.base_stat || 0,
+        hp: hp,
         image: poke.sprites.other['showdown'].front_default,
         sonido: poke.cries.latest,
       };

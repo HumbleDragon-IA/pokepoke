@@ -2,7 +2,9 @@
   <div>
     <button v-if="!estaLogueado" type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#loginModalCenter" id="login"
     >Login</button>
-    <button v-if="estaLogueado" type="button" class="btn btn-outline-danger" @click="logout">Logout</button>
+    <router-link to="/">
+      <button v-if="estaLogueado" type="button" class="btn btn-outline-danger" @click="logout">Logout</button>
+    </router-link>
     
     <div class="modal fade" id="loginModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
