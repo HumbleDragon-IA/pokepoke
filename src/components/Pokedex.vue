@@ -37,8 +37,15 @@ export default {
       pokemonAudSrc:null
     };
   },
+
+  
   mounted(){
+    
+    console.log('mounted')
     this.clearSearch()
+  },
+  updated(){
+    console.log('update')
   },
   methods: {
     async searchPokemon() {

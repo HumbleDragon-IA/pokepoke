@@ -2,8 +2,8 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'https://pokeapi.co/api/v2/pokemon?limit=150&offset=0',
-
+   baseUrl: 'http://localhost:8081/'
+    
 });
 
 export default axiosInstance;
