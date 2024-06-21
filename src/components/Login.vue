@@ -90,7 +90,8 @@ export default {
     },
     logout() {
       login.logout();
-      this.globalStore.setUsuario(null,null,null,null,false)            
+      this.globalStore.setUsuario(null,null,null,null,false)       
+      this.$router.push('/')     
       console.log('logout exitoso');
     },
     resetearFormulario() {
