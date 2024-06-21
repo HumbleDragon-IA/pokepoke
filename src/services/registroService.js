@@ -19,11 +19,11 @@ class Registro {
 
   async login(mail, password) {
     try {
-      const response = await axios.post(`${API_URL}/user/login`, {
+      const response = await axios.post(`${API_URL}/user/login`,  {
           mail,
           password,
         
-      });
+      }, {withCredentials:true},);
 
      
       if (response.data.success) {
@@ -37,7 +37,7 @@ class Registro {
   }
   async logout() {
     try{
-      const response = await axios.post(`${API_URL}/user/logout`,{});
+      const response = await axios.post(`${API_URL}/user/logout`,{},{withCredentials:true});
       console.log(response)
       if(response.data.success){
         delete axios.defaults.headers.common['Authorization']; 

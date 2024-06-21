@@ -70,6 +70,8 @@ export default {
     async getPoke() {
       const pokemones = await pokebolaService.getAll();
       this.pokemones = pokemones;
+      console.log(pokemones)
+     
     },
     async putPokemon(id, pokemon) {
       const pokeActualizado = await pokebolaService.put(id, pokemon);
@@ -82,23 +84,24 @@ export default {
       }
 
         const nuevoPoke = {
-        nombre: poke.name,
+        apodo: poke.name,
         nivel: 1,
+        tableroId: "",
         type: poke.types.map(typeInfo => typeInfo.type.name).join(', '),
         ataque: poke.stats.find(stat => stat.stat.name === 'attack')?.base_stat || 0,
         defense: poke.stats.find(stat => stat.stat.name === 'defense')?.base_stat || 0,
         specialAttack: poke.stats.find(stat => stat.stat.name === 'special-attack')?.base_stat || 0,
         specialDefense: poke.stats.find(stat => stat.stat.name === 'special-defense')?.base_stat || 0,
         speed: poke.stats.find(stat => stat.stat.name === 'speed')?.base_stat || 0,
-        numero: poke.id,
+        nroPokemon: poke.id,
         hp: poke.stats.find(stat => stat.stat.name === 'hp')?.base_stat || 0,
         image: poke.sprites.other['showdown'].front_default,
         sonido: poke.cries.latest,
       };
 
       try {
-        const pokeGuardado = await pokebolaService.post(nuevoPoke);
-        this.pokemones.push(pokeGuardado);
+         await pokebolaService.post(nuevoPoke);
+       
       } catch (error) {
         console.error('Error saving Pokémon to Mockapi:', error);
       }
@@ -111,9 +114,12 @@ export default {
       const index = this.pokemones.findIndex(pokemon => pokemon.id === pokeEliminado.id);
       this.pokemones.splice(index, 1);
     },
-    colorPorTipo(pokemon){
+    colorPorTipo(pokemon) {
+      if (!pokemon.type) {
+        return '#fff'; // Retorna un color por defecto si el tipo no está definido
+      }
       let tipo = pokemon.type.split(',')[0];
       return altTypeColorMap[tipo];
-    }
+    },
   }
 }

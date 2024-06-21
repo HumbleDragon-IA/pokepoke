@@ -1,11 +1,11 @@
-import axiosInstance from '../axios.js';
+import axios from 'axios';
 
-/* const asd = 'http://localhost:8081/'; */
+const API_URL = 'http://localhost:8081';
 
 export const getAll = async () => {
     try{
-    const { data: pokemon } = await axiosInstance.get()
-    
+    const { data:{ return: pokemon} } = await axios.get(`${API_URL}/pokemon`)
+   
         return pokemon
     }
     catch(error) {
@@ -19,7 +19,7 @@ export const getAll = async () => {
 
 export const put = async (id, pokemon) => {
     try {
-        const { data: pokeActualizado } = await axiosInstance.put(+id, pokemon)
+        const { data: pokeActualizado } = await axios.put(+id, pokemon)
         return pokeActualizado
     }
     catch(error) {
@@ -31,7 +31,7 @@ export const put = async (id, pokemon) => {
 
 export const post = async pokemon  => {
     try{
-    const { data: pokemonGuardado } = await axiosInstance.post( pokemon)
+    const { data: {return: pokemonGuardado} } = await axios.post(`${API_URL}/pokemon`,pokemon)
         return pokemonGuardado
     }
     catch(error) {
@@ -44,7 +44,7 @@ export const post = async pokemon  => {
 
 export const del = async (id)  => {
     try{
-    const { data: pokeEliminado } = await axiosInstance.delete(+id)
+    const { data: pokeEliminado } = await axios.delete(+id)
         return pokeEliminado
     }
     catch(error) {
