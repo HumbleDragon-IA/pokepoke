@@ -9,21 +9,13 @@ export const useGlobalStore = defineStore('global', {
         logueado: false,
     }),
     actions:{
-        setUsuarioId(value){
-            this.usuarioId = value
-        },
-        setTableroId(value){
-            this.tableroId = value
-        },
-        setNameUsuario(value){
-            this.nameUsuario = value
-        },
-        setEsAdmin(value){
-            this.esAdmin = value
-        },
-        setLogueado(value){
-            this.logueado = value
-        }
+        setUsuario(usuarioId,tableroId,nameUsuario,esAdmin,logueado){
+            this.usuarioId = usuarioId
+            this.tableroId = tableroId
+            this.nameUsuario = nameUsuario
+            this.esAdmin = esAdmin
+            this.logueado = logueado
+        }       
     },
     getters:{
         getUsuarioId: state => state.usuarioId,

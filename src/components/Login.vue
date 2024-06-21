@@ -1,8 +1,8 @@
 <template>
   <div>
-    <button v-if="!estaLogueado" type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#loginModalCenter" id="login"
+    <button v-if="!this.globalStore.getLogueado" type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#loginModalCenter" id="login"
     >Login</button>
-    <button v-if="estaLogueado" type="button" class="btn btn-outline-danger" @click="logout">Logout</button>
+    <button v-if="this.globalStore.getLogueado" type="button" class="btn btn-outline-danger" @click="logout">Logout</button>
     
     <div class="modal fade" id="loginModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -53,8 +53,7 @@ import $ from 'jquery';
 import Registro from './Register.vue'
 
 export default {
-  name: "login",
-  props: ['estaLogueado2'],
+  name: "login",  
   components: {
     Registro
   },
@@ -69,7 +68,6 @@ export default {
         password: false,
       },
       error: null,
-      estaLogueado: false,
       globalStore: useGlobalStore(),
     };
   },
@@ -82,16 +80,7 @@ export default {
         const { email, password } = this.formData;
         const {nameUsuario, tableroId, usuarioId, rolId} = await login.login(email, password);
         this.resetearFormulario();
-
-        this.globalStore.setNameUsuario(nameUsuario)
-        this.globalStore.setUsuarioId(usuarioId)
-        this.globalStore.setTableroId(tableroId)
-        this.globalStore.setEsAdmin(rolId == 1)
-        this.globalStore.setLogueado(true)
-
-
-        this.estaLogueado = true;
-        this.$emit("login-data",this.estaLogueado)
+        this.globalStore.setUsuario(usuarioId,tableroId,nameUsuario,rolId == 1,true)                        
         console.log('login exitoso');
         $('#loginModalCenter').modal('hide'); 
       } catch (error) {
@@ -101,9 +90,7 @@ export default {
     },
     logout() {
       login.logout();
-      this.globalStore.setLogueado(false)
-      this.estaLogueado = false;
-      this.$emit("login-data",this.estaLogueado)
+      this.globalStore.setUsuario(null,null,null,null,false)            
       console.log('logout exitoso');
     },
     resetearFormulario() {
