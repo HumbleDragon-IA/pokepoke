@@ -22,7 +22,11 @@
           </li>
 
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/tablero" v-if="this.estaLogueado">Tablero</RouterLink>
+            <RouterLink class="nav-link" to="/tablero" v-if="this.globalStore.getLogueado">Tablero</RouterLink>
+            <!-- <RouterLink class="nav-link" to="/tablero" v-if="this.estaLogueado">Tablero</RouterLink> -->
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" to="/tablero" v-if="this.globalStore.getEsAdmin">PUNTO ADMIN</RouterLink>            
           </li>
           </ul>
           <img class="banner-img d-none d-lg-block" src="../assets/Magikarp.webp" alt="">
@@ -33,6 +37,7 @@
 </template>
 
 <script>
+import { useGlobalStore } from '@/stores/global.js'
 import Login from './Login.vue'
 export default {
   name: 'src-components-navbar',
@@ -45,17 +50,21 @@ export default {
   },
   data() {
     return {
-      estaLogueado: false,
+      globalStore: useGlobalStore(),
+      // estaLogueado: false,
     }
   },
   methods: {
     manejarLogin(){
-      this.estaLogueado = !this.estaLogueado
-      console.log(this.estaLogueado)
-    },
-    manejarLogout(){
-      this.estaLogueado = false
+      console.log('entro por aca')
     }
+    // manejarLogin(){
+    //   this.estaLogueado = !this.estaLogueado
+    //   console.log(this.estaLogueado)
+    // },
+    // manejarLogout(){
+    //   this.estaLogueado = false
+    // }
   },
   computed: {
 

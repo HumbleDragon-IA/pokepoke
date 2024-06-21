@@ -27,7 +27,7 @@ class Registro {
 
      
       if (response.data.success) {
-        return response.data.message;
+        return response.data.payload;
       } else {
         throw new Error("Email o contraseña incorrectos.");
       }

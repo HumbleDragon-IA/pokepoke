@@ -47,6 +47,7 @@
 </template>
 
 <script>
+import { useGlobalStore } from '@/stores/global.js'
 import login from '../services/registroService';
 import $ from 'jquery';
 import Registro from './Register.vue'
@@ -69,6 +70,7 @@ export default {
       },
       error: null,
       estaLogueado: false,
+      globalStore: useGlobalStore(),
     };
   },
   methods: {
@@ -78,8 +80,16 @@ export default {
       }
       try {
         const { email, password } = this.formData;
-        await login.login(email, password);
+        const {nameUsuario, tableroId, usuarioId, rolId} = await login.login(email, password);
         this.resetearFormulario();
+
+        this.globalStore.setNameUsuario(nameUsuario)
+        this.globalStore.setUsuarioId(usuarioId)
+        this.globalStore.setTableroId(tableroId)
+        this.globalStore.setEsAdmin(rolId == 1)
+        this.globalStore.setLogueado(true)
+
+
         this.estaLogueado = true;
         this.$emit("login-data",this.estaLogueado)
         console.log('login exitoso');
@@ -91,6 +101,7 @@ export default {
     },
     logout() {
       login.logout();
+      this.globalStore.setLogueado(false)
       this.estaLogueado = false;
       this.$emit("login-data",this.estaLogueado)
       console.log('logout exitoso');
