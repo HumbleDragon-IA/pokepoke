@@ -1,8 +1,9 @@
 import axios from 'axios';
+/* import pokemonService from './pokemonService'; */
 
 const API_URL = 'http://localhost:8081';
 
-export const getAll = async () => {
+export const getAllPokemons = async () => {
     try{
     const { data:{ return: pokemon} } = await axios.get(`${API_URL}/pokemon`)
    
@@ -17,7 +18,16 @@ export const getAll = async () => {
 
 };
 
-export const put = async (id, pokemon) => {
+export const getAllPokemonsByTableroId = async (tableroId)=>{
+    try {
+        const {data: { return: pokemon} } = await axios.get(`${API_URL}/pokemon/tablero/${tableroId}`)
+        return pokemon
+    } catch (error) {
+        console.error('Error al traer los pokemones', error)
+    }
+}
+
+export const editPokemon = async (id, pokemon) => {
     try {
         const { data: pokeActualizado } = await axios.put(+id, pokemon)
         return pokeActualizado
@@ -29,7 +39,7 @@ export const put = async (id, pokemon) => {
 }
 
 
-export const post = async pokemon  => {
+export const createPokemon = async pokemon  => {
     try{
     const { data: {return: pokemonGuardado} } = await axios.post(`${API_URL}/pokemon`,pokemon)
         return pokemonGuardado
@@ -42,9 +52,9 @@ export const post = async pokemon  => {
 
 };
 
-export const del = async (id)  => {
+export const deletePokemon = async (id)  => {
     try{
-    const { data: pokeEliminado } = await axios.delete(+id)
+    const { data: pokeEliminado } = await axios.delete(`${API_URL}/pokemon/${id}`)
         return pokeEliminado
     }
     catch(error) {

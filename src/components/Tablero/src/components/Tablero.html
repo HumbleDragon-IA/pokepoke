@@ -1,9 +1,9 @@
 <template>
 
   <ModalPokemon :mostrar="mostrar" :pokemonId="pokemonId" :editarId="editarId" :consultaStats="consultaStats"
-    :pokemonDex="pokemonDex" @ocultar="ocultar" @enviar="enviar" @verStats="verStats" />
+    :pokemonDex="pokemonDex" @ocultar="ocultar" @enviar="enviar" @verStats="verStats" @editar="editar" />
   <ModalBorrarPokemon :mostrar="mostrar2" :borrarID="borrarId" @ocultar="ocultar2" @borrar="borrar" />
-
+  
   <div class="jumbotron">
     <h5 id="title">Tablero Jugador</h5>
     <button :disabled="this.pokemones.length>=6" class="add-btn" @click="agregar">
@@ -24,7 +24,7 @@
             <div class="card-data">
               <ul>
                 <li>
-                  <h5> {{ pokemon.nombre }} </h5>
+                  <h5> {{ pokemon.apodo }} </h5>
                 </li>
                 <li>
                   <p> Nivel: {{ pokemon.nivel }} </p>
@@ -32,9 +32,10 @@
                 <li>
                   <p> Tipo: {{ pokemon.type }} </p>
                 </li>
+                
               </ul>
-              <button class="stat-btn" @click="verStats(pokemon.nombre)">Stats</button>
-
+              <button class="stat-btn" @click="verStats(pokemon.nroPokemon)">Stats</button>
+              <button class="stat-btn" @click="editar(pokemon.id)">Cambiar Apodo</button>
 
             </div>
 

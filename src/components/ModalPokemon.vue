@@ -9,6 +9,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+          
           <div class="modal-body">
             <div v-if="this.consultaStats" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
               <PokemonCard :pokemonDex="pokemonDex"> </PokemonCard>
@@ -82,7 +83,8 @@ export default {
     },
     verStats() {
       this.$emit('verStats');
-    }
+    },
+    
   },
   computed: {
     selectedPokemonTypeColor() {
