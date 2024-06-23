@@ -1,0 +1,49 @@
+<template>
+  <div class="jumbotron">
+    <h3 id="title">Pokemones de {{nombreUsuario}}</h3>
+    <button :disabled="this.pokemones.length >= 6" class="add-btn" @click="agregar">
+      Agregar Pokemon
+    </button>
+
+    <div class="row">
+      <div class="col-md-4 mb-3" v-for="(pokemon, index) in pokemones" :key="index">
+        <div class="pokeCard" :style="{ backgroundColor: colorPorTipo(pokemon) }">
+          <div class="pokeCard-body">
+            <img v-if="pokemon" :src="pokemon.image" :alt="pokemon.nombre" class="card-img-top img-pokemon" />
+            <div class="card-data">
+              <ul>
+                <li>
+                  <h5>
+                    <template v-if="editingPokemonId === pokemon.id">
+                      <input v-model="editingApodo" @keyup.enter="updateApodo(pokemon)" class="edit-input" />
+                      <span class="edit-icon" @click="updateApodo(pokemon)">💾</span>
+                    </template>
+                    <template v-else>
+                      {{ pokemon.apodo }}
+                      <span class="edit-icon" @click="enableEditing(pokemon.id, pokemon.apodo)">✏️</span>
+                    </template>
+                  </h5>
+                </li>
+                <li>
+                  <p>Nivel: {{ pokemon.nivel }}</p>
+                </li>
+                <li>
+                  <p>Tipo: {{ pokemon.type }}</p>
+                </li>
+              </ul>
+
+
+            </div>
+          </div>
+          <div class="botones">
+            <button class="stat-btn" @click="verStats(pokemon.nroPokemon)">Stats</button>
+            <button class="delete-btn" @click="deletePokemon(pokemon.id)">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ModalPokemon :mostrar="mostrar" :pokemonId="pokemonId" :editarId="editarId" :consultaStats="consultaStats"
+    :pokemonDex="pokemonDex" @ocultar="ocultar" @enviar="enviar" @verStats="verStats" />
+</template>
