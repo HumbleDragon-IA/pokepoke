@@ -115,7 +115,7 @@ export default {
 
     async deletePokemon(id) {
       if (confirm("Esta seguro de borrar el pokemon?")) {
-        const pokeEliminado = await pokebolaService.deletePokemon(id);
+        await pokebolaService.deletePokemon(id);
         this.getPoke();
       }
     },
