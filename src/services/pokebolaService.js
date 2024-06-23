@@ -29,7 +29,7 @@ export const getAllPokemonsByTableroId = async (tableroId)=>{
 
 export const editPokemon = async (id, pokemon) => {
     try {
-        const { data: pokeActualizado } = await axios.put(+id, pokemon)
+        const { data: pokeActualizado } = await axios.put(`${API_URL}/pokemon/${id}`, pokemon)
         return pokeActualizado
     }
     catch(error) {

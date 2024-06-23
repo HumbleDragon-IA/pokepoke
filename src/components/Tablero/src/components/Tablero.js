@@ -1,23 +1,19 @@
+
 import * as pokebolaService from '../../../../services/pokebolaService';
 import ModalPokemon from '../../../ModalPokemon.vue';
 import ModalBorrarPokemon from '../../../ModalBorrarPokemon.vue';
 import pokemonService from '@/services/pokemonService';
 import { altTypeColorMap } from '@/utils/PokemonDicc';
-import {useGlobalStore} from '@/stores/global.js'
+import { useGlobalStore } from '@/stores/global.js';
 
 export default {
   components: {
     ModalPokemon,
     ModalBorrarPokemon,
- 
   },
   mounted() {
     this.getPoke();
   },
-
- /*  beforeUpdate() {
-    this.getPoke();
-  }, */
   data() {
     return {
       pokemones: [],
@@ -28,14 +24,14 @@ export default {
       borrarId: null,
       consultaStats: false,
       pokemonDex: {},
-      globalStore: useGlobalStore()
+      globalStore: useGlobalStore(),
+      editingPokemonId: null,
+      editingApodo: '',
     };
   },
   methods: {
- 
     async verStats(pokemonNombre) {
       try {
-
         const pokemon = await pokemonService.getPokemonDetails(pokemonNombre);
         this.pokemonDex = pokemon;
         this.consultaStats = true;
@@ -48,19 +44,19 @@ export default {
       this.editarId = null;
       this.pokemonId = {};
       this.mostrar = true;
-      this.consultaStats = false
+      this.consultaStats = false;
     },
     editar(id) {
       this.editarId = id;
       this.pokemonId = { ...this.pokemones.find(p => p.id === id) };
       this.mostrar = true;
-      this.consultaStats = false
+      this.consultaStats = false;
     },
     ocultar() {
       this.mostrar = false;
       this.editarId = null;
       this.pokemonId = {};
-      this.consultaStats = false
+      this.consultaStats = false;
     },
     async enviar(poke) {
       console.log(poke);
@@ -69,7 +65,7 @@ export default {
         await this.putPokemon(this.editarId, poke);
         this.pokemonId = {};
         this.editarId = null;
-        this.consultaStats = false
+        this.consultaStats = false;
       } else {
         await this.postPoke(poke);
       }
@@ -77,21 +73,18 @@ export default {
     async getPoke() {
       const pokemones = await pokebolaService.getAllPokemonsByTableroId(this.globalStore.tableroId);
       this.pokemones = pokemones;
-      
-     
     },
     async putPokemon(id, pokemon) {
-     await pokebolaService.editPokemon(id, pokemon);
-      this.getPoke()
+      await pokebolaService.editPokemon(id, pokemon);
+      this.getPoke();
     },
     async postPoke(poke) {
       if (!poke || !poke.types || !poke.stats) {
         console.error('Invalid Pokémon data:', poke);
         return;
       }
-
-        const nuevoPoke = {
-          nroPokemon: poke.id,
+      const nuevoPoke = {
+        nroPokemon: poke.id,
         apodo: poke.name,
         nivel: 1,
         tableroId: this.globalStore.tableroId,
@@ -105,28 +98,37 @@ export default {
         image: poke.sprites.other['showdown'].front_default,
         sonido: poke.cries.latest,
       };
-
       try {
-         await pokebolaService.createPokemon(nuevoPoke);
-       
+        await pokebolaService.createPokemon(nuevoPoke);
       } catch (error) {
         console.error('Error saving Pokémon to Mockapi:', error);
       }
-      this.getPoke()
+      this.getPoke();
     },
     async deletePokemon(id) {
-      
       const pokeEliminado = await pokebolaService.deletePokemon(id);
       console.log(pokeEliminado, 'delete');
-      this.getPoke()
-   
+      this.getPoke();
+    },
+    enableEditing(id, apodo) {
+      this.editingPokemonId = id;
+      this.editingApodo = apodo;
+    },
+    async updateApodo(pokemon) {
+      if (this.editingApodo.trim() === '') {
+        return;
+      }
+      pokemon.apodo = this.editingApodo;
+      await this.putPokemon(pokemon.id, pokemon);
+      this.editingPokemonId = null;
+      this.editingApodo = '';
     },
     colorPorTipo(pokemon) {
       if (!pokemon.type) {
-        return '#fff'; // Retorna un color por defecto si el tipo no está definido
+        return '#fff';
       }
       let tipo = pokemon.type.split(',')[0];
       return altTypeColorMap[tipo];
     },
   }
-}
+};
