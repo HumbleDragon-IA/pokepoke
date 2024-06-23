@@ -1,7 +1,6 @@
 <template>
   <div>
-    <button v-if="!this.globalStore.getLogueado" type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#loginModalCenter" id="login"
-    >Login</button>
+    <button v-if="!this.globalStore.getLogueado" type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#loginModalCenter" id="login">Login</button>
     <button v-if="this.globalStore.getLogueado" type="button" class="btn btn-outline-danger" @click="logout">Logout</button>
     
     <div class="modal fade" id="loginModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
@@ -18,31 +17,25 @@
               <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" class="form-control" placeholder="Email" id="email" v-model="formData.email" @input="formDirty.email = true"/>
-                <div v-if="!formData.email && formDirty.email" class="alert alert-danger mb-10">
-                  Campo Requerido
-                </div>
+                <div v-if="!formData.email && formDirty.email" class="alert alert-danger mb-10">Campo Requerido</div>
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" placeholder="Password" id="password" v-model="formData.password" @input="formDirty.password = true"/>
-                <div v-if="!formData.password && formDirty.password" class="alert alert-danger mt-1">
-                  Campo Requerido
-                </div>
+                <div v-if="!formData.password && formDirty.password" class="alert alert-danger mt-1">Campo Requerido</div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <div>
-              No esta Registrado? <Registro></Registro>
-            </div>
-            <button type="button" class="btn btn-primary" @click="enviar" :disabled="!camposValidos()">
-              Enviar
-            </button>
+            <div>No está Registrado? <Registro @close-error-modal="cerrarModalError"></Registro></div>
+            <button type="button" class="btn btn-primary" @click="enviar" :disabled="!camposValidos()">Enviar</button>
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>
     </div>
+
+    <ErrorModal v-if="error" :error="error" @close-error-modal="cerrarModalError" />
   </div>
 </template>
 
@@ -51,11 +44,13 @@ import { useGlobalStore } from '@/stores/global.js'
 import login from '../services/registroService';
 import $ from 'jquery';
 import Registro from './Register.vue'
+import ErrorModal from './ErrorModalRegister.vue'
 
 export default {
   name: "login",  
   components: {
-    Registro
+    Registro,
+    ErrorModal
   },
   data() {
     return {
@@ -85,6 +80,7 @@ export default {
         $('#loginModalCenter').modal('hide'); 
       } catch (error) {
         this.error = error.message;
+        $('#errorModal').modal('show');
         console.log(error);
       }
     },
@@ -106,15 +102,18 @@ export default {
     },
     camposValidos() {
       return this.formData.email && this.formData.password;
+    },
+    cerrarModalError() {
+      $('#errorModal').modal('hide');
     }
   },
-  mounted(){
+  mounted() {
   }
 };
 </script>
 
 <style scoped>
-.modal{
+.modal {
   color: white;
 }
 </style>

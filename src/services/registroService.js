@@ -22,10 +22,7 @@ class Registro {
       const response = await axios.post(`${API_URL}/user/login`,  {
           mail,
           password,
-        
-      }, {withCredentials:true},);
-
-     
+      }, {withCredentials:true},);     
       if (response.data.success) {
         return response.data.payload;
       } else {
@@ -45,13 +42,10 @@ class Registro {
 
       }
       else{throw new Error(response.data.message)}
-     }
+    }
     catch(error){
       throw new Error(error.message)
     }
-    
-
-   
   }
 }
 
