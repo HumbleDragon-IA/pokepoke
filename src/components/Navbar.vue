@@ -25,7 +25,7 @@
             <RouterLink class="nav-link" to="/tablero" v-if="this.globalStore.getLogueado">Tablero</RouterLink>
           </li>
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/tablero" v-if="this.globalStore.getEsAdmin">PUNTO ADMIN</RouterLink>
+            <RouterLink class="nav-link" to="/adminview" v-if="this.globalStore.getEsAdmin">Admin View</RouterLink>
           </li>
         </ul>
         <img class="banner-img d-none d-lg-block" src="../assets/Magikarp.webp" alt="">
