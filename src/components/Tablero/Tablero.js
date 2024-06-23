@@ -1,19 +1,19 @@
-
-import * as pokebolaService from '../../../../services/pokebolaService';
-import ModalPokemon from '../../../ModalPokemon.vue';
-import ModalBorrarPokemon from '../../../ModalBorrarPokemon.vue';
+import * as pokebolaService from '@/services/pokebolaService';
+import ModalPokemon from '@/components/ModalPokemon.vue';
 import pokemonService from '@/services/pokemonService';
 import { altTypeColorMap } from '@/utils/PokemonDicc';
 import { useGlobalStore } from '@/stores/global.js';
 
 export default {
+  
   components: {
-    ModalPokemon,
-    ModalBorrarPokemon,
+    ModalPokemon
   },
+
   mounted() {
     this.getPoke();
   },
+
   data() {
     return {
       pokemones: [],
@@ -29,6 +29,7 @@ export default {
       editingApodo: '',
     };
   },
+
   methods: {
     async verStats(pokemonNombre) {
       try {
@@ -40,24 +41,28 @@ export default {
         console.error('Error fetching Pokémon details:', error);
       }
     },
+
     agregar() {
       this.editarId = null;
       this.pokemonId = {};
       this.mostrar = true;
       this.consultaStats = false;
     },
+
     editar(id) {
       this.editarId = id;
       this.pokemonId = { ...this.pokemones.find(p => p.id === id) };
       this.mostrar = true;
       this.consultaStats = false;
     },
+
     ocultar() {
       this.mostrar = false;
       this.editarId = null;
       this.pokemonId = {};
       this.consultaStats = false;
     },
+
     async enviar(poke) {
       console.log(poke);
       this.mostrar = false;
@@ -70,14 +75,17 @@ export default {
         await this.postPoke(poke);
       }
     },
+
     async getPoke() {
       const pokemones = await pokebolaService.getAllPokemonsByTableroId(this.globalStore.tableroId);
       this.pokemones = pokemones;
     },
+
     async putPokemon(id, pokemon) {
       await pokebolaService.editPokemon(id, pokemon);
       this.getPoke();
     },
+
     async postPoke(poke) {
       if (!poke || !poke.types || !poke.stats) {
         console.error('Invalid Pokémon data:', poke);
@@ -105,17 +113,20 @@ export default {
       }
       this.getPoke();
     },
+
     async deletePokemon(id) {
-      if(confirm("Esta seguro de borrar el pokemon?")) {
+      if (confirm("Esta seguro de borrar el pokemon?")) {
         const pokeEliminado = await pokebolaService.deletePokemon(id);
         console.log(pokeEliminado, 'delete');
         this.getPoke();
       }
     },
+
     enableEditing(id, apodo) {
       this.editingPokemonId = id;
       this.editingApodo = apodo;
     },
+
     async updateApodo(pokemon) {
       if (this.editingApodo.trim() === '') {
         return;
@@ -125,6 +136,7 @@ export default {
       this.editingPokemonId = null;
       this.editingApodo = '';
     },
+
     colorPorTipo(pokemon) {
       if (!pokemon.type) {
         return '#fff';

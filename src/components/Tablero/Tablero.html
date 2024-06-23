@@ -10,8 +10,6 @@
         <div class="pokeCard" :style="{ backgroundColor: colorPorTipo(pokemon) }">
           <div class="pokeCard-body">
             <img v-if="pokemon" :src="pokemon.image" :alt="pokemon.nombre" class="card-img-top img-pokemon" />
-            <img v-else src="../../../../assets/tarjVacia.png" class="card-img-top img-pokemon">
-
             <div class="card-data">
               <ul>
                 <li>
@@ -48,5 +46,4 @@
 
   <ModalPokemon :mostrar="mostrar" :pokemonId="pokemonId" :editarId="editarId" :consultaStats="consultaStats"
     :pokemonDex="pokemonDex" @ocultar="ocultar" @enviar="enviar" @verStats="verStats" />
-  <ModalBorrarPokemon :mostrar="mostrar2" :borrarID="borrarId" @ocultar="ocultar2" @borrar="borrar" />
 </template>
