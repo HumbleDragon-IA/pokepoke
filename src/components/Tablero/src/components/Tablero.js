@@ -106,9 +106,11 @@ export default {
       this.getPoke();
     },
     async deletePokemon(id) {
-      const pokeEliminado = await pokebolaService.deletePokemon(id);
-      console.log(pokeEliminado, 'delete');
-      this.getPoke();
+      if(confirm("Esta seguro de borrar el pokemon?")) {
+        const pokeEliminado = await pokebolaService.deletePokemon(id);
+        console.log(pokeEliminado, 'delete');
+        this.getPoke();
+      }
     },
     enableEditing(id, apodo) {
       this.editingPokemonId = id;

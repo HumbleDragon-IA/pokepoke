@@ -86,6 +86,7 @@
   align-content: center;
   border-radius: 20px;
   font-weight: 650;
+  margin-right: 10px;
 }
 
 .delete-btn {
@@ -105,4 +106,12 @@
 
 #title {
   color: white;
+}
+
+.edit-icon{
+  cursor: pointer;
+}
+
+.edit-input{
+  width: 100px;
 }
