@@ -10,7 +10,7 @@
                     <th scope="col">Mail</th>
                     <!-- <th scope="col">Fecha Creacion</th> -->
                     <th scope="col">Rol</th>
-                    <th></th>
+                    <th></th>                    
                 </tr>
             </thead>
             <tbody v-for="(usuario, index) in usuarios" :key="index">
@@ -20,8 +20,10 @@
                     <td>{{usuario.mail}}</td>
                     <!-- <td>{{ usuario.createdAt }}</td> -->
                     <td>{{ usuario.Rol.name }}</td>
-                    <td v-if="usuario.Rol.name != 'admin'"><button type="button" class="add-btn" @click="hacerAdmin(usuario.id)">Hacer admin</button></td>
-                    <td v-else></td>
+                    <td>
+                        <button type="button" :disabled="usuario.Rol.name == 'admin'" class="add-btn" @click="hacerAdmin(usuario.id)">Dar admin</button>
+                        <button type="button" :disabled="usuario.Rol.name == 'admin'" class="add-btn" @click="deleteUsuario(usuario.id)">Eliminar</button>
+                    </td>       
                 </tr>               
             </tbody>
         </table>
@@ -54,6 +56,10 @@ export default {
         async hacerAdmin(id){
             await usuarioService.setAdmin(id);    
             this.getUsuarios();      
+        },
+        async deleteUsuario(id){
+            await usuarioService.deleteUsuario(this.globalStore.getUsuarioId,id);
+            this.getUsuarios();
         }
     }
 };

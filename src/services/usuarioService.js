@@ -22,6 +22,16 @@ const usuarioService = {
             console.error("Error Usuarios PUT", error)
             return []
         }
+    },
+    async deleteUsuario(idAdmin,id){
+        try{
+            const {data: {message: message}} = await axios.delete(`${API_URL}/user/${idAdmin}/delete/${id}`)
+            return message
+        }
+        catch(error){
+            console.error("Error Usuarios DELETE",error)
+            return []
+        }
     }
 }
 
