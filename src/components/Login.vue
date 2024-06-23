@@ -1,9 +1,10 @@
 <template>
   <div>
-    <button v-if="!this.globalStore.getLogueado" type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#loginModalCenter" id="login"
-    >Login</button>
-    <button v-if="this.globalStore.getLogueado" type="button" class="btn btn-outline-danger" @click="logout">Logout</button>
-    
+    <button v-if="!this.globalStore.getLogueado" type="button" class="btn btn-outline-success" data-toggle="modal"
+      data-target="#loginModalCenter" id="login">Login</button>
+    <button v-if="this.globalStore.getLogueado" type="button" class="btn btn-outline-danger"
+      @click="logout">Logout</button>
+
     <div class="modal fade" id="loginModalCenter" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content bg-dark">
@@ -17,14 +18,16 @@
             <form novalidate @submit.prevent="enviar">
               <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" placeholder="Email" id="email" v-model="formData.email" @input="formDirty.email = true"/>
+                <input type="email" class="form-control" placeholder="Email" id="email" v-model="formData.email"
+                  @input="formDirty.email = true" />
                 <div v-if="!formData.email && formDirty.email" class="alert alert-danger mb-10">
                   Campo Requerido
                 </div>
               </div>
               <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" class="form-control" placeholder="Password" id="password" v-model="formData.password" @input="formDirty.password = true"/>
+                <input type="password" class="form-control" placeholder="Password" id="password"
+                  v-model="formData.password" @input="formDirty.password = true" />
                 <div v-if="!formData.password && formDirty.password" class="alert alert-danger mt-1">
                   Campo Requerido
                 </div>
@@ -53,10 +56,11 @@ import $ from 'jquery';
 import Registro from './Register.vue'
 
 export default {
-  name: "login",  
+  name: "login",
   components: {
     Registro
   },
+  
   data() {
     return {
       formData: {
@@ -71,6 +75,7 @@ export default {
       globalStore: useGlobalStore(),
     };
   },
+
   methods: {
     async enviar() {
       if (!this.camposValidos()) {
@@ -78,22 +83,22 @@ export default {
       }
       try {
         const { email, password } = this.formData;
-        const {nameUsuario, tableroId, usuarioId, rolId} = await login.login(email, password);
+        const { nameUsuario, tableroId, usuarioId, rolId } = await login.login(email, password);
         this.resetearFormulario();
-        this.globalStore.setUsuario(usuarioId,tableroId,nameUsuario,rolId == 1,true)                        
-        console.log('login exitoso');
-        $('#loginModalCenter').modal('hide'); 
+        this.globalStore.setUsuario(usuarioId, tableroId, nameUsuario, rolId == 1, true)
+        $('#loginModalCenter').modal('hide');
       } catch (error) {
         this.error = error.message;
-        console.log(error);
+        console.error(error);
       }
     },
+
     logout() {
       login.logout();
-      this.globalStore.setUsuario(null,null,null,null,false)       
-      this.$router.push('/')     
-      console.log('logout exitoso');
+      this.globalStore.setUsuario(null, null, null, null, false)
+      this.$router.push('/')
     },
+
     resetearFormulario() {
       this.formData = {
         email: '',
@@ -104,17 +109,16 @@ export default {
         password: false,
       };
     },
+
     camposValidos() {
       return this.formData.email && this.formData.password;
     }
-  },
-  mounted(){
   }
 };
 </script>
 
 <style scoped>
-.modal{
+.modal {
   color: white;
 }
 </style>

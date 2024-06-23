@@ -6,25 +6,25 @@
             <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
                     <th scope="col">Mail</th>
-                    <!-- <th scope="col">Fecha Creacion</th> -->
+                    <th scope="col">Nombre</th>
                     <th scope="col">Rol</th>
-                    <th></th>                    
+                    <th></th>
                 </tr>
             </thead>
             <tbody v-for="(usuario, index) in usuarios" :key="index">
                 <tr>
-                    <th scope="row">{{ index+1 }}</th>
-                    <td>{{usuario.name}}</td>
-                    <td>{{usuario.mail}}</td>
-                    <!-- <td>{{ usuario.createdAt }}</td> -->
+                    <th scope="row">{{ index + 1 }}</th>
+                    <td>{{ usuario.name }}</td>
+                    <td>{{ usuario.mail }}</td>
                     <td>{{ usuario.Rol.name }}</td>
                     <td>
-                        <button type="button" :disabled="usuario.Rol.name == 'admin'" class="add-btn" @click="hacerAdmin(usuario.id)">Dar admin</button>
-                        <button type="button" :disabled="usuario.Rol.name == 'admin'" class="add-btn" @click="deleteUsuario(usuario.id)">Eliminar</button>
-                    </td>       
-                </tr>               
+                        <button type="button" :disabled="usuario.Rol.name == 'admin'" class="add-btn"
+                            @click="hacerAdmin(usuario.id)">Dar admin</button>
+                        <button type="button" :disabled="usuario.Rol.name == 'admin'" class="add-btn"
+                            @click="deleteUsuario(usuario.id)">Eliminar</button>
+                    </td>
+                </tr>
             </tbody>
         </table>
 
@@ -37,28 +37,30 @@ import { useGlobalStore } from '@/stores/global.js'
 
 export default {
     name: "adminview",
-    components: {
-    },
+
     data() {
         return {
             usuarios: [],
             globalStore: useGlobalStore(),
         };
     },
-    mounted(){
+    mounted() {
         this.getUsuarios();
     },
     methods: {
-        async getUsuarios(){
-            const message = await usuarioService.getAllUsuarios(this.globalStore.getUsuarioId);        
+
+        async getUsuarios() {
+            const message = await usuarioService.getAllUsuarios(this.globalStore.getUsuarioId);
             this.usuarios = message;
         },
-        async hacerAdmin(id){
-            await usuarioService.setAdmin(id);    
-            this.getUsuarios();      
+
+        async hacerAdmin(id) {
+            await usuarioService.setAdmin(id);
+            this.getUsuarios();
         },
-        async deleteUsuario(id){
-            await usuarioService.deleteUsuario(this.globalStore.getUsuarioId,id);
+
+        async deleteUsuario(id) {
+            await usuarioService.deleteUsuario(this.globalStore.getUsuarioId, id);
             this.getUsuarios();
         }
     }
@@ -76,9 +78,9 @@ export default {
 }
 
 .add-btn {
-  margin-bottom: 15px;
-  background-color: greenyellow;
-  border: 0px;
-  font-weight: 650;
+    margin-bottom: 15px;
+    background-color: greenyellow;
+    border: 0px;
+    font-weight: 650;
 }
 </style>

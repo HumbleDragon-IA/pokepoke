@@ -23,7 +23,7 @@ const pokemonService = {
       throw error;
     }
   }
-
+  
 }
 
 export default pokemonService;

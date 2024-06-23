@@ -70,6 +70,7 @@ export default {
 
 nav {
   height: 70px;
+  margin-bottom: 20px;
 }
 
 .userName{

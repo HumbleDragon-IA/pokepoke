@@ -1,6 +1,6 @@
 <template>
   <div class="jumbotron">
-    <h5 id="title">Tablero Jugador</h5>
+    <h3 id="title">Pokemones de {{nombreUsuario}}</h3>
     <button :disabled="this.pokemones.length >= 6" class="add-btn" @click="agregar">
       Agregar Pokemon
     </button>
@@ -15,7 +15,7 @@
                 <li>
                   <h5>
                     <template v-if="editingPokemonId === pokemon.id">
-                      <input v-model="editingApodo"  @keyup.enter="updateApodo(pokemon)" class="edit-input" />
+                      <input v-model="editingApodo" @keyup.enter="updateApodo(pokemon)" class="edit-input" />
                       <span class="edit-icon" @click="updateApodo(pokemon)">💾</span>
                     </template>
                     <template v-else>
@@ -31,8 +31,8 @@
                   <p>Tipo: {{ pokemon.type }}</p>
                 </li>
               </ul>
-              
-              
+
+
             </div>
           </div>
           <div class="botones">

@@ -33,7 +33,6 @@ export const editPokemon = async (id, pokemon) => {
     }
 }
 
-
 export const createPokemon = async pokemon => {
     try {
         const { data: { return: pokemonGuardado } } = await axios.post(`${API_URL}/pokemon`, pokemon)
@@ -43,8 +42,6 @@ export const createPokemon = async pokemon => {
         console.error("Error Usuarios POST", error)
         return {}
     }
-
-
 };
 
 export const deletePokemon = async (id) => {
@@ -56,6 +53,4 @@ export const deletePokemon = async (id) => {
         console.error("Error Usuarios PUT", error)
         return {}
     }
-
-
 };

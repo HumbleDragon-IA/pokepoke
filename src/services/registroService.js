@@ -40,7 +40,6 @@ class Registro {
   async logout() {
     try {
       const response = await axios.post(`${API_URL}/user/logout`, {}, { withCredentials: true });
-      console.log(response)
       if (response.data.success) {
         delete axios.defaults.headers.common['Authorization'];
         return response.data.message

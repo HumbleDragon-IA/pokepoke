@@ -6,7 +6,8 @@
         <h2>{{ pokemonDex.name }}</h2>
         <p>#{{ pokemonDex.id }}</p>
       </div>
-      <img class="pokemon-image" :src="pokemonDex.sprites.other['official-artwork'].front_default" :alt="pokemonDex.name" />
+      <img class="pokemon-image" :src="pokemonDex.sprites.other['official-artwork'].front_default"
+        :alt="pokemonDex.name" />
       <div class="sound-btn">
         <div class="btn" @click.stop="reproducir">🔊</div>
       </div>
@@ -21,7 +22,7 @@
             </li>
           </ul>
         </div>
-     </div>
+      </div>
     </div>
   </div>
 
@@ -35,7 +36,7 @@ export default {
   methods: {
     reproducir(event) {
       event.stopPropagation();
-      event.preventDefault(); 
+      event.preventDefault();
       const audio = new Audio(this.pokemonDex.cries.latest);
       audio.play().catch(error => {
         console.error('Error al reproducir el audio: ', error);
@@ -43,6 +44,7 @@ export default {
     },
   },
   computed: {
+
     selectedPokemonTypesIcons() {
       let types = [];
       if (this.pokemonDex) {
@@ -52,6 +54,7 @@ export default {
       }
       return types.join(' ');
     },
+
     selectedPokemonTypeColor() {
       if (this.pokemonDex) {
         let type = this.pokemonDex.types[0].type.name;
@@ -64,6 +67,7 @@ export default {
 </script>
 
 <style scoped>
+
 .pokedex {
   max-width: 400px;
   margin: 0 auto;
@@ -105,11 +109,10 @@ input {
   cursor: pointer;
   display: flex;
   text-transform: capitalize;
-  justify-content:first baseline;
+  justify-content: first baseline;
   align-items: center;
   background-color: #343A40;
   color: white;
-
 }
 
 .suggestion-list li:hover {

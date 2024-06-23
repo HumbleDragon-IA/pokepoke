@@ -1,6 +1,6 @@
 <template>
-  <ModalPokemon :pokemonSeleccionadoId="this.pokemonSeleccionado"/>
-  
+  <ModalPokemon :pokemonSeleccionadoId="this.pokemonSeleccionado" />
+
   <div class="pokedex">
 
     <img class="title" src="../assets/poke.png" alt="">
@@ -14,9 +14,9 @@
       </li>
     </ul>
     <div v-if="pokemonSeleccionado" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
-      
+
       <PokemonCard :pokemonDex="this.pokemonSeleccionado"></PokemonCard>
-     
+
     </div>
   </div>
 
@@ -27,26 +27,23 @@ import pokemonService from '../services/pokemonService';
 import { typeEmojiMap, typeColorMap } from '@/utils/PokemonDicc';
 import PokemonCard from './PokemonCard.vue';
 export default {
-  components: {PokemonCard},
+
+  components: { PokemonCard },
+
   data() {
     return {
       query: '',
       sugerencias: [],
       pokemonSeleccionado: null,
       pokemonImgSrc: null,
-      pokemonAudSrc:null
+      pokemonAudSrc: null
     };
   },
 
-  
-  mounted(){
-    
-    console.log('mounted')
+  mounted() {
     this.clearSearch()
   },
-  updated(){
-    console.log('update')
-  },
+
   methods: {
     async searchPokemon() {
       if (this.query.length > 0) {
@@ -67,7 +64,7 @@ export default {
           try {
             const allPokemon = await pokemonService.getAllPokemon();
             this.sugerencias = allPokemon.filter(pokemon =>
-            pokemon.name.includes(this.query.toLowerCase())
+              pokemon.name.includes(this.query.toLowerCase())
             );
           } catch (error) {
             console.error('Error al traer la lista de pokemones:', error);
@@ -77,6 +74,7 @@ export default {
         this.sugerencias = [];
       }
     },
+
     async selectPokemon(name) {
       try {
         this.pokemonSeleccionado = await pokemonService.getPokemonDetails(name);
@@ -89,21 +87,24 @@ export default {
         console.error('Error al traer detalles del pokemon:', error);
       }
     },
-    clearSearch(){
-      this.query='',
-      this.suggestions = [];
+
+    clearSearch() {
+      this.query = '',
+        this.suggestions = [];
       this.pokemonSeleccionado = null;
       this.pokemonSeleccionadoColor = '';
     },
     emitPokemon() {
       this.$emit('pokemon-selected', this.pokemonSeleccionado);
-      
+
     },
-    reproducir(){
+    reproducir() {
       this.pokemonAudSrc.play()
     },
   },
+
   computed: {
+
     selectedPokemonTypesIcons() {
       let types = [];
       if (this.pokemonSeleccionado) {
@@ -113,6 +114,7 @@ export default {
       }
       return types.join(" ");
     },
+
     selectedPokemonTypeColor() {
 
       if (this.pokemonSeleccionado) {
@@ -121,7 +123,7 @@ export default {
       }
       return '#f7f7f7';
     },
-    
+
   }
 };
 </script>
@@ -137,7 +139,6 @@ export default {
 .title {
   margin-top: 1rem;
   width: 100%;
-
 }
 
 input {
@@ -163,18 +164,16 @@ input {
   z-index: 10;
   font-size: 20px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
 }
 
 .suggestion-list li {
   cursor: pointer;
   display: flex;
   text-transform: capitalize;
-  justify-content:first baseline;
+  justify-content: first baseline;
   align-items: center;
   background-color: #343A40;
   color: white;
-
 }
 
 .suggestion-list li:hover {

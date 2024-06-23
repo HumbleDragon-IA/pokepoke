@@ -5,7 +5,7 @@ import { altTypeColorMap } from '@/utils/PokemonDicc';
 import { useGlobalStore } from '@/stores/global.js';
 
 export default {
-  
+
   components: {
     ModalPokemon
   },
@@ -64,7 +64,6 @@ export default {
     },
 
     async enviar(poke) {
-      console.log(poke);
       this.mostrar = false;
       if (this.editarId) {
         await this.putPokemon(this.editarId, poke);
@@ -117,7 +116,6 @@ export default {
     async deletePokemon(id) {
       if (confirm("Esta seguro de borrar el pokemon?")) {
         const pokeEliminado = await pokebolaService.deletePokemon(id);
-        console.log(pokeEliminado, 'delete');
         this.getPoke();
       }
     },
@@ -144,5 +142,11 @@ export default {
       let tipo = pokemon.type.split(',')[0];
       return altTypeColorMap[tipo];
     },
+  },
+  computed: {
+    nombreUsuario(){
+      return this.globalStore.nameUsuario
+    }
   }
+
 };
