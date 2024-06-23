@@ -16,7 +16,7 @@
           <h3>Stats</h3>
           <hr>
           <ul>
-            <li class="types" data-toggle="tooltip" title="Disabled tooltip">
+            <li class="types">
               <strong class="type-title">Type:</strong>
               <div class="type-icons-container">
                 <span v-for="(icon, type) in selectedPokemonTypesIcons" :key="type" class="type-icon">
@@ -25,8 +25,6 @@
                 </span>
               </div>
             </li>
-
-
             <li v-for="stat in pokemonDex.stats" :key="stat.stat.name">
               <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
             </li>
