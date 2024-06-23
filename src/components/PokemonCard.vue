@@ -16,7 +16,17 @@
           <h3>Stats</h3>
           <hr>
           <ul>
-            <li><strong>Type:</strong> {{ selectedPokemonTypesIcons }}</li>
+            <li class="types" data-toggle="tooltip" title="Disabled tooltip">
+              <strong class="type-title">Type:</strong>
+              <div class="type-icons-container">
+                <span v-for="(icon, type) in selectedPokemonTypesIcons" :key="type" class="type-icon">
+                  {{ icon }}
+                  <span class="type-tooltip">{{ type }}</span>
+                </span>
+              </div>
+            </li>
+
+
             <li v-for="stat in pokemonDex.stats" :key="stat.stat.name">
               <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
             </li>
@@ -46,13 +56,14 @@ export default {
   computed: {
 
     selectedPokemonTypesIcons() {
-      let types = [];
+      let types = {};
       if (this.pokemonDex) {
         this.pokemonDex.types.forEach(element => {
-          types.push(typeEmojiMap[element.type.name]);
+          types[element.type.name] = typeEmojiMap[element.type.name];
         });
       }
-      return types.join(' ');
+      console.log(types);
+      return types;
     },
 
     selectedPokemonTypeColor() {
@@ -67,7 +78,6 @@ export default {
 </script>
 
 <style scoped>
-
 .pokedex {
   max-width: 400px;
   margin: 0 auto;
@@ -225,5 +235,38 @@ input {
 .sound-btn {
   display: flex;
   justify-content: center;
+}
+
+.type-title {
+  margin-right: auto;
+}
+
+.type-icons-container {
+  display: flex; 
+}
+
+.type-icon {
+  margin-left: 8px; 
+  position: relative; 
+  cursor: pointer;
+}
+
+.type-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 100%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  white-space: nowrap;
+  z-index: 10;
+  text-transform: capitalize;
+}
+
+.type-icon:hover .type-tooltip {
+  display: block; 
 }
 </style>
