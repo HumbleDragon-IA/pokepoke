@@ -1,56 +1,56 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://666122c663e6a0189fe89111.mockapi.io/pokemon/pokemones/';
+const API_URL = 'http://localhost:8081';
 
-export const getAll = async () => {
-    try{
-    const { data: pokemon } = await axios.get(API_BASE_URL)
-    
+export const getAllPokemons = async () => {
+    try {
+        const { data: { return: pokemon } } = await axios.get(`${API_URL}/pokemon`)
         return pokemon
     }
-    catch(error) {
+    catch (error) {
         console.error("Error Usuarios GET", error)
         return []
     }
-
-    
-
 };
 
-export const put = async (id, pokemon) => {
+export const getAllPokemonsByTableroId = async (tableroId) => {
     try {
-        const { data: pokeActualizado } = await axios.put(API_BASE_URL+id, pokemon)
+        const { data: { return: pokemon } } = await axios.get(`${API_URL}/pokemon/tablero/${tableroId}`)
+        return pokemon
+    } catch (error) {
+        console.error('Error al traer los pokemones', error)
+    }
+}
+
+export const editPokemon = async (id, pokemon) => {
+    try {
+        const { data: pokeActualizado } = await axios.put(`${API_URL}/pokemon/${id}`, pokemon)
         return pokeActualizado
     }
-    catch(error) {
+    catch (error) {
         console.error("Error productos PUT:", error);
         return {}
     }
 }
 
-
-export const post = async pokemon  => {
-    try{
-    const { data: pokemonGuardado } = await axios.post(API_BASE_URL, pokemon)
+export const createPokemon = async pokemon => {
+    try {
+        const { data: { return: pokemonGuardado } } = await axios.post(`${API_URL}/pokemon`, pokemon)
         return pokemonGuardado
     }
-    catch(error) {
+    catch (error) {
         console.error("Error Usuarios POST", error)
         return {}
     }
-
-
 };
 
-export const del = async (id)  => {
-    try{
-    const { data: pokeEliminado } = await axios.delete(API_BASE_URL+id)
+export const deletePokemon = async (id) => {
+    try {
+        const { data: pokeEliminado } = await axios.delete(`${API_URL}/pokemon/${id}`)
         return pokeEliminado
     }
-    catch(error) {
+    catch (error) {
         console.error("Error Usuarios PUT", error)
         return {}
     }
-
-
 };

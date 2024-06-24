@@ -6,7 +6,8 @@
         <h2>{{ pokemonDex.name }}</h2>
         <p>#{{ pokemonDex.id }}</p>
       </div>
-      <img class="pokemon-image" :src="pokemonDex.sprites.other['official-artwork'].front_default" :alt="pokemonDex.name" />
+      <img class="pokemon-image" :src="pokemonDex.sprites.other['official-artwork'].front_default"
+        :alt="pokemonDex.name" />
       <div class="sound-btn">
         <div class="btn" @click.stop="reproducir">🔊</div>
       </div>
@@ -15,13 +16,21 @@
           <h3>Stats</h3>
           <hr>
           <ul>
-            <li><strong>Type:</strong> {{ selectedPokemonTypesIcons }}</li>
+            <li class="types">
+              <strong class="type-title">Type:</strong>
+              <div class="type-icons-container">
+                <span v-for="(icon, type) in selectedPokemonTypesIcons" :key="type" class="type-icon">
+                  {{ icon }}
+                  <span class="type-tooltip">{{ type }}</span>
+                </span>
+              </div>
+            </li>
             <li v-for="stat in pokemonDex.stats" :key="stat.stat.name">
               <strong>{{ stat.stat.name }}:</strong> {{ stat.base_stat }}
             </li>
           </ul>
         </div>
-     </div>
+      </div>
     </div>
   </div>
 
@@ -35,7 +44,6 @@ export default {
   methods: {
     reproducir(event) {
       event.stopPropagation();
-      event.preventDefault(); 
       const audio = new Audio(this.pokemonDex.cries.latest);
       audio.play().catch(error => {
         console.error('Error al reproducir el audio: ', error);
@@ -43,15 +51,18 @@ export default {
     },
   },
   computed: {
+
     selectedPokemonTypesIcons() {
-      let types = [];
+      let types = {};
       if (this.pokemonDex) {
         this.pokemonDex.types.forEach(element => {
-          types.push(typeEmojiMap[element.type.name]);
+          types[element.type.name] = typeEmojiMap[element.type.name];
         });
       }
-      return types.join(' ');
+      console.log(types);
+      return types;
     },
+
     selectedPokemonTypeColor() {
       if (this.pokemonDex) {
         let type = this.pokemonDex.types[0].type.name;
@@ -105,11 +116,10 @@ input {
   cursor: pointer;
   display: flex;
   text-transform: capitalize;
-  justify-content:first baseline;
+  justify-content: first baseline;
   align-items: center;
   background-color: #343A40;
   color: white;
-
 }
 
 .suggestion-list li:hover {
@@ -222,5 +232,38 @@ input {
 .sound-btn {
   display: flex;
   justify-content: center;
+}
+
+.type-title {
+  margin-right: auto;
+}
+
+.type-icons-container {
+  display: flex; 
+}
+
+.type-icon {
+  margin-left: 8px; 
+  position: relative; 
+  cursor: pointer;
+}
+
+.type-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 100%; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  white-space: nowrap;
+  z-index: 10;
+  text-transform: capitalize;
+}
+
+.type-icon:hover .type-tooltip {
+  display: block; 
 }
 </style>

@@ -1,13 +1,15 @@
 import axios from "axios";
 
-const API_URL = "https://6664c599932baf9032ac0ce3.mockapi.io/final/";
+/* const API_URL = "https://6664c599932baf9032ac0ce3.mockapi.io/final/"; */
+const API_URL = "http://localhost:8081";
 
 class Registro {
-  async register(nombre, email, password) {
+  
+  async register(name, mail, password) {
     try {
-      const response = await axios.post(`${API_URL}/users`, {
-        nombre,
-        email,
+      const response = await axios.post(`${API_URL}/user`, {
+        name,
+        mail,
         password,
       });
       return response.data;
@@ -16,21 +18,15 @@ class Registro {
     }
   }
 
-  async login(email, password) {
+  async login(mail, password) {
     try {
-      const response = await axios.get(`${API_URL}/users`, {
-        params: {
-          email,
+      const response = await axios.post(`${API_URL}/user/login`,  {
+          mail,
           password,
-        },
-      });
-
-      const usuario = response.data.find(
-        (usuario) => usuario.email === email && usuario.password === password
-      );
-
-      if (usuario) {
-        return usuario;
+        
+      }, {withCredentials:true},);
+      if (response.data.success) {
+        return response.data.payload;
       } else {
         throw new Error("Email o contraseña incorrectos.");
       }
@@ -38,8 +34,20 @@ class Registro {
       throw new Error("Email o contraseña incorrectos.");
     }
   }
-  logout() {
-    delete axios.defaults.headers.common['Authorization']; 
+
+  async logout() {
+    try {
+      const response = await axios.post(`${API_URL}/user/logout`, {}, { withCredentials: true });
+      if (response.data.success) {
+        delete axios.defaults.headers.common['Authorization'];
+        return response.data.message
+
+      }
+      else{throw new Error(response.data.message)}
+     }
+    catch(error){
+      throw new Error(error.message)
+    }
   }
 }
 

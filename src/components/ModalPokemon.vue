@@ -9,6 +9,7 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
+
           <div class="modal-body">
             <div v-if="this.consultaStats" class="pokemon-card" :style="{ backgroundColor: selectedPokemonTypeColor }">
               <PokemonCard :pokemonDex="pokemonDex"> </PokemonCard>
@@ -18,8 +19,6 @@
                 <span v-if="!this.consultaStats">
                   <Pokedex ref="pokedex" @pokemon-selected="updatePokemonSeleccionado" />
                 </span>
-
-
               </div>
               <button v-if="!consultaStats" :disabled="!pokemonSeleccionado"
                 :class="['btn', { 'btn-warning': editarId, 'btn-success': !editarId }, 'mt-5 mb-3', 'float-right']">
@@ -46,29 +45,36 @@ export default {
   name: 'ModalPokemon',
   props: ['mostrar', 'editarId', 'pokemonId', 'consultaStats', 'pokemonDex'],
   components: { Pokedex, PokemonCard },
+
   mounted() {
     this.modal = new Modal(document.getElementById('exampleModal'), {
       keyboard: false,
       backdrop: 'static',
     });
   },
+
   data() {
     return {
       modal: null,
       pokemonSeleccionado: null,
     };
   },
+
   methods: {
+
     updatePokemonSeleccionado(pokemon) {
       this.pokemonSeleccionado = pokemon;
     },
+
     show() {
       this.modal.show();
       this.$refs.pokedex.clearSearch();
     },
+
     hide() {
       this.modal.hide();
     },
+
     submit() {
       if (this.pokemonSeleccionado) {
         this.$emit('enviar', this.pokemonSeleccionado);
@@ -77,14 +83,19 @@ export default {
       }
       this.pokemonSeleccionado = null;
     },
+
     ocultar() {
       this.$emit('ocultar');
     },
+
     verStats() {
       this.$emit('verStats');
-    }
+    },
+
   },
+
   computed: {
+
     selectedPokemonTypeColor() {
       if (this.pokemonDex) {
         let type = this.pokemonDex.types[0].type.name;
@@ -93,6 +104,7 @@ export default {
       return '#f7f7f7';
     },
   },
+
   watch: {
     mostrar(newMostrar) {
       if (newMostrar) {

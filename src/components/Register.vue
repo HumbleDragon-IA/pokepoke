@@ -91,11 +91,10 @@ export default {
         const { nombre, email, password } = this.formData;
         await registro.register(nombre, email, password);
         this.resetearFormulario();
-        console.log('registro exitoso')
         $('#exampleModalCenter').modal('hide');
       } catch (error) {
         this.error = error.message;
-        console.log(error)
+        console.error(error)
       }
     },
     resetearFormulario() {

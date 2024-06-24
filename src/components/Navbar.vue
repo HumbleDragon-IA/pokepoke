@@ -3,11 +3,11 @@
   <section class="src-components-navbar">
 
 
-    <nav class="navbar navbar-expand navbar-dark bg-dark" >
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
 
       <a class="navbar-brand" href="#">
         <img src="../assets/pokeball-logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        <span><strong> ORTEMON</strong></span>
+        <span><strong> ORTEMON </strong></span>
       </a>
 
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -22,17 +22,24 @@
           </li>
 
           <li class="nav-item">
-            <RouterLink class="nav-link" to="/tablero" v-if="this.estaLogueado">Tablero</RouterLink>
+            <RouterLink class="nav-link" to="/tablero" v-if="this.globalStore.getLogueado">Tablero</RouterLink>
           </li>
-          </ul>
-          <img class="banner-img d-none d-lg-block" src="../assets/Magikarp.webp" alt="">
-          <Login @login-data="manejarLogin"></Login>
+          <li class="nav-item">
+            <RouterLink class="nav-link" to="/adminview" v-if="this.globalStore.getEsAdmin">Admin View</RouterLink>
+          </li>
+        </ul>
+        <img class="banner-img d-none d-lg-block" src="../assets/Magikarp.webp" alt="">
+        <div class="userName">
+        <span v-if="this.globalStore.getLogueado"><strong> Hola, {{ globalStore.getNameUsuario }}! </strong></span>
+        </div>
+        <Login></Login>
       </div>
     </nav>
   </section>
 </template>
 
 <script>
+import { useGlobalStore } from '@/stores/global.js'
 import Login from './Login.vue'
 export default {
   name: 'src-components-navbar',
@@ -45,17 +52,10 @@ export default {
   },
   data() {
     return {
-      estaLogueado: false,
+      globalStore: useGlobalStore(),
     }
   },
   methods: {
-    manejarLogin(){
-      this.estaLogueado = !this.estaLogueado
-      console.log(this.estaLogueado)
-    },
-    manejarLogout(){
-      this.estaLogueado = false
-    }
   },
   computed: {
 
@@ -70,5 +70,11 @@ export default {
 
 nav {
   height: 70px;
+  margin-bottom: 20px;
+}
+
+.userName{
+  color:white; 
+  margin-right: 10px;
 }
 </style>
