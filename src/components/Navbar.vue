@@ -47,19 +47,13 @@ export default {
   components: {
     Login,
   },
-  mounted() {
-
-  },
+ 
   data() {
     return {
       globalStore: useGlobalStore(),
     }
   },
-  methods: {
-  },
-  computed: {
-
-  }
+ 
 }
 </script>
 
