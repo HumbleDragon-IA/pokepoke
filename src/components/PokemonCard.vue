@@ -44,7 +44,6 @@ export default {
   methods: {
     reproducir(event) {
       event.stopPropagation();
-      event.preventDefault();
       const audio = new Audio(this.pokemonDex.cries.latest);
       audio.play().catch(error => {
         console.error('Error al reproducir el audio: ', error);
